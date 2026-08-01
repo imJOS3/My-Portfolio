@@ -1,0 +1,258 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================
+   VARIABLES DE TEMA — Noche (cyberpunk oscuro) 
+   ============================================ */
+:root,
+[data-theme="night"] {
+  --bg-base: #05010f;
+  --bg-gradient: linear-gradient(135deg, #05010f, #12042e, #030712, #1a0033);
+  --bg-grid-line: rgba(0, 255, 255, 0.06);
+  --bg-glow-1: rgba(168, 85, 247, 0.35);
+  --bg-glow-2: rgba(34, 211, 238, 0.28);
+  --bg-glow-3: rgba(217, 70, 239, 0.25);
+
+  --surface: rgba(5, 1, 15, 0.7);
+  --surface-solid: #05010f;
+  --surface-border: rgba(34, 211, 238, 0.2);
+  --surface-border-hover: rgba(34, 211, 238, 0.5);
+
+  --text-primary: #ffffff;
+  --text-secondary: #a5b4fc;
+  --text-muted: #8b8ab8;
+
+  --accent-cyan: #22d3ee;
+  --accent-purple: #a855f7;
+  --accent-fuchsia: #d946ef;
+  --accent-gradient: linear-gradient(90deg, #22d3ee, #d946ef);
+
+  --glow-soft: 0 0 8px var(--accent-purple);
+  --glow-strong: 0 0 16px var(--accent-cyan);
+
+  --scrollbar-track: #05010f;
+  --scrollbar-thumb: linear-gradient(180deg, #22d3ee 0%, #a855f7 55%, #d946ef 100%);
+
+  /* Modal flotante de proyectos */
+  --modal-overlay: rgba(5, 1, 15, 0.8);
+  --modal-surface: linear-gradient(135deg, #05010f, #12042e, #1a0033);
+  --modal-border: rgba(34, 211, 238, 0.2);
+  --modal-shadow: 0 0 60px rgba(168, 85, 247, 0.35);
+
+  /* Pills de tecnologías y badges */
+  --pill-bg: rgba(255, 255, 255, 0.08);
+  --pill-border: rgba(34, 211, 238, 0.25);
+  --badge-bg: rgba(5, 1, 15, 0.6);
+}
+
+/* ============================================
+   VARIABLES DE TEMA — Día (futurista claro) 
+   ============================================ */
+[data-theme="day"] {
+  --bg-base: #f3f0ff;
+  --bg-gradient: linear-gradient(135deg, #f8f7ff, #eef2ff, #fdf4ff, #f3f0ff);
+  --bg-grid-line: rgba(124, 58, 237, 0.07);
+  --bg-glow-1: rgba(168, 85, 247, 0.18);
+  --bg-glow-2: rgba(34, 211, 238, 0.16);
+  --bg-glow-3: rgba(217, 70, 239, 0.14);
+
+  --surface: rgba(255, 255, 255, 0.65);
+  --surface-solid: #ffffff;
+  --surface-border: rgba(124, 58, 237, 0.25);
+  --surface-border-hover: rgba(124, 58, 237, 0.5);
+
+  --text-primary: #1e1033;
+  --text-secondary: #4c3a6e;
+  --text-muted: #6b5d8a;
+
+  --accent-cyan: #0891b2;
+  --accent-purple: #7e22ce;
+  --accent-fuchsia: #a21caf;
+  --accent-gradient: linear-gradient(90deg, #0891b2, #a21caf);
+
+  --glow-soft: 0 0 6px rgba(126, 34, 206, 0.35);
+  --glow-strong: 0 0 10px rgba(8, 145, 178, 0.4);
+
+  --scrollbar-track: #eef2ff;
+  --scrollbar-thumb: linear-gradient(180deg, #0891b2 0%, #7e22ce 55%, #a21caf 100%);
+
+  /* Modal flotante de proyectos */
+  --modal-overlay: rgba(30, 16, 51, 0.5);
+  --modal-surface: linear-gradient(135deg, #ffffff, #f3f0ff, #eef2ff);
+  --modal-border: rgba(124, 58, 237, 0.25);
+  --modal-shadow: 0 0 40px rgba(126, 34, 206, 0.25);
+
+  /* Pills de tecnologías y badges */
+  --pill-bg: rgba(126, 34, 206, 0.08);
+  --pill-border: rgba(124, 58, 237, 0.25);
+  --badge-bg: rgba(255, 255, 255, 0.7);
+}
+
+/* Transición suave al cambiar de tema */
+* {
+  transition: background-color 0.4s ease, border-color 0.4s ease, color 0.4s ease;
+}
+
+/* Evita cualquier scroll horizontal accidental, sin importar la causa */
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+@keyframes levitate {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+  100% { transform: translateY(0); }
+}
+
+body {
+  background-color: var(--bg-base);
+  background-image:
+    linear-gradient(var(--bg-grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--bg-grid-line) 1px, transparent 1px),
+    radial-gradient(circle at 15% 20%, var(--bg-glow-1), transparent 45%),
+    radial-gradient(circle at 85% 10%, var(--bg-glow-2), transparent 45%),
+    radial-gradient(circle at 50% 90%, var(--bg-glow-3), transparent 50%),
+    var(--bg-gradient);
+  background-size:
+    48px 48px,
+    48px 48px,
+    100% 100%,
+    100% 100%,
+    100% 100%,
+    100% 100%;
+  background-attachment: fixed;
+  min-height: 100vh;
+  margin: 0;
+}
+
+.animate-levitate {
+  animation: levitate 2.5s ease-in-out infinite;
+}
+
+/* ============================================
+   CLASES SEMÁNTICAS REUTILIZABLES (usa estas 
+   en vez de colores hardcodeados en cada componente)
+   ============================================ */
+.themed-surface {
+  background: var(--surface);
+  border: 1px solid var(--surface-border);
+}
+.themed-surface-solid {
+  background: var(--surface-solid);
+  border: 1px solid var(--surface-border);
+}
+.themed-text-primary { color: var(--text-primary); }
+.themed-text-secondary { color: var(--text-secondary); }
+.themed-text-muted { color: var(--text-muted); }
+.themed-accent-text {
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.themed-glow-text {
+  color: var(--accent-purple);
+  filter: drop-shadow(var(--glow-soft));
+}
+.themed-border-accent { border-color: var(--surface-border); }
+.themed-border-accent:hover { border-color: var(--surface-border-hover); }
+.themed-btn-gradient {
+  background: var(--accent-gradient);
+  color: var(--surface-solid);
+}
+.themed-ring-accent {
+  --tw-ring-color: var(--accent-purple);
+}
+
+/* Modal flotante de proyectos */
+.themed-modal-overlay { background: var(--modal-overlay); }
+.themed-modal-surface {
+  background: var(--modal-surface);
+  border-color: var(--modal-border);
+  box-shadow: var(--modal-shadow);
+}
+
+/* Pills de tecnologías y badges */
+.themed-pill {
+  background: var(--pill-bg);
+  border-color: var(--pill-border);
+  color: var(--text-primary);
+}
+.themed-badge {
+  background: var(--badge-bg);
+  border-color: var(--surface-border);
+  color: var(--text-secondary);
+}
+
+/* ============================================
+   ANIMACIÓN DE SECCIONES — simple y comercial
+   Una sola animación: fade + leve elevación vertical.
+   Se eliminaron slide-left/right (causaban overflow-x)
+   y fade-rotate (se veía poco profesional).
+   ============================================ */
+.section-animate {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+.section-animate.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Alias: todos los tipos de animación anteriores ahora usan
+   el mismo efecto simple, para no tener que tocar cada componente
+   que aún referencia estas clases por nombre. */
+.fade-scale,
+.slide-right,
+.slide-left,
+.slide-up,
+.slide-down,
+.fade-rotate {
+  transform: translateY(24px);
+}
+.fade-scale.visible,
+.slide-right.visible,
+.slide-left.visible,
+.slide-up.visible,
+.slide-down.visible,
+.fade-rotate.visible {
+  transform: translateY(0);
+}
+
+/* Scrollbar personalizado con variables de tema */
+::-webkit-scrollbar {
+  width: 12px;
+  background: var(--scrollbar-track);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 8px;
+  /* Sin box-shadow: el glow del thumb se derrama fuera del track */
+  border: 3px solid var(--scrollbar-track);
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover {
+  border-width: 2px;
+}
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+
+.drop-shadow-neon {
+  filter: drop-shadow(var(--glow-soft)) drop-shadow(var(--glow-strong));
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; transform: scale(0.95); }
+  100% { opacity: 1; transform: scale(1); }
+}
+.animate-fade-in { animation: fadeIn 0.4s ease; }
+
+@keyframes fadeOut {
+  0% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(0.95); }
+}
+.animate-fade-out { animation: fadeOut 0.4s ease; }
