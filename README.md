@@ -97,7 +97,7 @@ Hay un `render.yaml` en `backend/` para despliegue en Render.
 
 ## Primer push a GitHub
 
-1. Crea un repositorio vacío en GitHub (sin README).
+1. Crea un repositorio vacío en GitHub.
 2. En la raíz del proyecto:
 
 ```bash

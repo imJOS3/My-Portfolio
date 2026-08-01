@@ -1,14 +1,18 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import ProjectCarousel from "./ProjectCarousel";
 import ProjectFloatWindow, { Project } from "./projectFloatWindow";
+import ecoturismoImg from "../../../assets/projects/ecoturismo.png";
+import oldWestImg from "../../../assets/projects/old-west.png";
+import bingoOnlineImg from "../../../assets/projects/bingo-online.png";
+import projectWipImg from "../../../assets/projects/project-wip.png";
 
 const projectList: Project[] = [
     {
         title: "EcoTurismo",
         description:
             "Plataforma de reservas de ecoturismo estilo Airbnb/Booking. Permite a anfitriones publicar alojamientos y unidades, y a turistas explorar, reservar y dejar reseñas, todo con paneles diferenciados según el rol del usuario.",
-        image:
-            "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=800&q=80",
+        image: ecoturismoImg,
+        imageScale: 1.12,
         link: "https://github.com/imJOS3/ECOTURIOSMO-WEB-APP-",
         type: "Fullstack",
         category: "Fullstack",
@@ -21,28 +25,11 @@ const projectList: Project[] = [
         ],
     },
     {
-        title: "NexusFlow",
-        description:
-            "Plataforma SaaS modular de gestión empresarial que centraliza CRM, reservas, inventario, analítica y automatizaciones en un solo panel, pensada para escalar como producto multi-módulo.",
-        image:
-            "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=800&q=80",
-        link: "https://github.com/imJOS3/nexusflow",
-        type: "SaaS",
-        category: "Fullstack",
-        technologies: ["Next.js 14", "TypeScript", "NestJS", "PostgreSQL", "Prisma", "Redis", "Docker"],
-        highlights: [
-            "8 módulos de negocio integrados: CRM, reservas, inventario, finanzas, soporte y más",
-            "Monorepo escalable con Turborepo y pnpm workspaces",
-            "Autenticación con JWT y control de acceso basado en roles (RBAC)",
-            "Infraestructura lista para producción con Docker y CI en GitHub Actions",
-        ],
-    },
-    {
         title: "Old West",
         description:
             "Plataforma web para una barbería, pensada para digitalizar la operación diaria del negocio: los clientes reservan su cita online eligiendo servicio y horario disponible, mientras que el dueño gestiona el personal, los turnos y la agenda desde un panel propio.",
-        image:
-            "https://images.unsplash.com/photo-1465101178521-c1a4c8a0f8f9?auto=format&fit=crop&w=800&q=80",
+        image: oldWestImg,
+        imageScale: 1.1,
         link: "https://github.com/imJOS3/old-west-",
         type: "Fullstack",
         category: "Fullstack",
@@ -55,11 +42,45 @@ const projectList: Project[] = [
         ],
     },
     {
+        title: "Bingo Online",
+        description:
+            "Juego de bingo multijugador en tiempo real: cartones interactivos, cuenta regresiva de partida, chat, listado de jugadores y ganadores, con patrones de victoria (como completar una columna) visibles en pantalla.",
+        image: bingoOnlineImg,
+        imageScale: 1.1,
+        link: "https://github.com/imJOS3/BINGO-2",
+        type: "Fullstack",
+        category: "Fullstack",
+        technologies: ["Preact", "Vite", "Tailwind", "Socket.io", "Zustand", "Axios"],
+        highlights: [
+            "Partidas en tiempo real con Socket.io",
+            "Cartón interactivo 5x5 con casilla FREE y letras B-I-N-G-O",
+            "Panel de jugadores, ganadores y chat en vivo",
+            "Indicador de patrón objetivo y temporizador de fin de partida",
+        ],
+    },
+    {
+        title: "NexusFlow",
+        description:
+            "Plataforma SaaS modular de gestión empresarial que centraliza CRM, reservas, inventario, analítica y automatizaciones en un solo panel, pensada para escalar como producto multi-módulo.",
+        image: projectWipImg,
+        status: "wip",
+        link: "https://github.com/imJOS3/nexusflow",
+        type: "SaaS",
+        category: "Fullstack",
+        technologies: ["Next.js 14", "TypeScript", "NestJS", "PostgreSQL", "Prisma", "Redis", "Docker"],
+        highlights: [
+            "8 módulos de negocio integrados: CRM, reservas, inventario, finanzas, soporte y más",
+            "Monorepo escalable con Turborepo y pnpm workspaces",
+            "Autenticación con JWT y control de acceso basado en roles (RBAC)",
+            "Infraestructura lista para producción con Docker y CI en GitHub Actions",
+        ],
+    },
+    {
         title: "Battio Lab",
         description:
             "API REST para la gestión operativa de un taller de scooters eléctricas: control de empleados, usuarios del sistema y, próximamente, inventario de repuestos y mantenimiento.",
-        image:
-            "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80",
+        image: projectWipImg,
+        status: "improve",
         link: "https://github.com/imJOS3/battio-lab",
         type: "Backend",
         category: "Backend",
@@ -75,9 +96,9 @@ const projectList: Project[] = [
         title: "Agencia de Eventos — ERP",
         description:
             "Sistema ERP colaborativo para gestionar una agencia de eventos de punta a punta: clientes y contratos, inventario de alquiler, facturación, contabilidad y un portal para que los clientes contraten servicios directamente.",
-        image:
-            "https://images.unsplash.com/photo-1518895312237-a9e23508077d?auto=format&fit=crop&w=800&q=80",
-        link: "https://github.com/imJOS3/Agencia-de-eventos",
+        image: projectWipImg,
+        status: "wip",
+        link: "https://github.com/imJOS3/Event-Agency-msvc",
         type: "ERP",
         category: "Fullstack",
         technologies: ["Java 21", "Spring Boot", "Node.js", "React", "Vite", "MySQL", "Docker"],
@@ -100,6 +121,16 @@ const Projects = () => {
     const handleClose = () => {
         setSelectedProject(null);
     };
+
+    const typeStats = Object.entries(
+        projectList.reduce<Record<string, number>>((acc, project) => {
+            const key = project.type || project.category;
+            acc[key] = (acc[key] ?? 0) + 1;
+            return acc;
+        }, {})
+    )
+        .filter(([, count]) => count > 0)
+        .sort((a, b) => b[1] - a[1]);
 
     return (
         <>
@@ -125,34 +156,23 @@ const Projects = () => {
                     <ProjectCarousel projects={projectList} onProjectClick={handleProjectClick} />
                 </div>
 
-                <div className="hidden lg:block w-full max-w-4xl">
-                    <div className="grid grid-cols-4 gap-3 xl:gap-4 text-center">
-                        <div className="themed-surface rounded-xl p-2 xl:p-3">
-                            <div className="themed-glow-text font-bold text-base xl:text-lg">
-                                {projectList.filter((project) => project.category === "Frontend").length}
-                            </div>
-                            <div className="themed-text-secondary text-xs xl:text-sm">Frontend</div>
-                        </div>
-                        <div className="themed-surface rounded-xl p-2 xl:p-3">
-                            <div className="themed-glow-text font-bold text-base xl:text-lg">
-                                {projectList.filter((project) => project.category === "Backend").length}
-                            </div>
-                            <div className="themed-text-secondary text-xs xl:text-sm">Backend</div>
-                        </div>
-                        <div className="themed-surface rounded-xl p-2 xl:p-3">
-                            <div className="themed-glow-text font-bold text-base xl:text-lg">
-                                {projectList.filter((project) => project.category === "Fullstack").length}
-                            </div>
-                            <div className="themed-text-secondary text-xs xl:text-sm">Fullstack</div>
-                        </div>
-                        <div className="themed-surface rounded-xl p-2 xl:p-3">
-                            <div className="themed-glow-text font-bold text-base xl:text-lg">
-                                {projectList.filter((project) => project.category === "ERP").length}
-                            </div>
-                            <div className="themed-text-secondary text-xs xl:text-sm">ERP</div>
+                {typeStats.length > 0 && (
+                    <div className="hidden lg:block w-full max-w-4xl">
+                        <div
+                            className="grid gap-3 xl:gap-4 text-center"
+                            style={{ gridTemplateColumns: `repeat(${typeStats.length}, minmax(0, 1fr))` }}
+                        >
+                            {typeStats.map(([label, count]) => (
+                                <div key={label} className="themed-surface rounded-xl p-2 xl:p-3">
+                                    <div className="themed-glow-text font-bold text-base xl:text-lg">
+                                        {count}
+                                    </div>
+                                    <div className="themed-text-secondary text-xs xl:text-sm">{label}</div>
+                                </div>
+                            ))}
                         </div>
                     </div>
-                </div>
+                )}
             </div>
 
             <ProjectFloatWindow project={selectedProject} onClose={handleClose} />

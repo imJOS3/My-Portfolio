@@ -1,5 +1,5 @@
-// src/pages/projectFloatWindow.tsx
 import { useEffect } from "react";
+import { createPortal } from "react-dom";
 
 export interface Project {
     title: string;
@@ -11,6 +11,10 @@ export interface Project {
     category: string;
     technologies?: string[];
     highlights?: string[];
+    /** Escala > 1 para acercar y ocultar bordes de la captura */
+    imageScale?: number;
+    /** Estado visual: en proceso / por mejorar / listo */
+    status?: "wip" | "improve" | "done";
 }
 
 interface ProjectFloatWindowProps {
@@ -20,38 +24,77 @@ interface ProjectFloatWindowProps {
 
 const ProjectFloatWindow = ({ project, onClose }: ProjectFloatWindowProps) => {
     useEffect(() => {
+        if (!project) return;
+
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key === "Escape") onClose();
         };
-        if (project) {
-            document.addEventListener("keydown", handleKeyDown);
-            document.body.style.overflow = "hidden";
+
+        // Bloquear scroll de la página (mantener posición)
+        const scrollY = window.scrollY;
+        const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+        const { body, documentElement: html } = document;
+
+        const prevBodyOverflow = body.style.overflow;
+        const prevBodyPaddingRight = body.style.paddingRight;
+        const prevBodyPosition = body.style.position;
+        const prevBodyTop = body.style.top;
+        const prevBodyWidth = body.style.width;
+        const prevHtmlOverflow = html.style.overflow;
+
+        body.style.overflow = "hidden";
+        html.style.overflow = "hidden";
+        body.style.position = "fixed";
+        body.style.top = `-${scrollY}px`;
+        body.style.width = "100%";
+        if (scrollbarWidth > 0) {
+            body.style.paddingRight = `${scrollbarWidth}px`;
         }
+
+        const preventTouchScroll = (e: TouchEvent) => {
+            // Permitir scroll solo dentro del contenido del modal
+            const target = e.target as HTMLElement | null;
+            if (target?.closest("[data-modal-scroll]")) return;
+            e.preventDefault();
+        };
+
+        document.addEventListener("keydown", handleKeyDown);
+        document.addEventListener("touchmove", preventTouchScroll, { passive: false });
+
         return () => {
             document.removeEventListener("keydown", handleKeyDown);
-            document.body.style.overflow = "";
+            document.removeEventListener("touchmove", preventTouchScroll);
+
+            body.style.overflow = prevBodyOverflow;
+            body.style.paddingRight = prevBodyPaddingRight;
+            body.style.position = prevBodyPosition;
+            body.style.top = prevBodyTop;
+            body.style.width = prevBodyWidth;
+            html.style.overflow = prevHtmlOverflow;
+
+            window.scrollTo(0, scrollY);
         };
     }, [project, onClose]);
 
     if (!project) return null;
 
-    return (
+    const modal = (
         <div
-            className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-4 md:p-6 animate-[fadeIn_0.2s_ease-out]"
+            className="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-4 md:p-6 animate-[fadeIn_0.2s_ease-out]"
             role="dialog"
             aria-modal="true"
             aria-labelledby="project-modal-title"
             onClick={onClose}
         >
-            {/* Fondo con blur */}
+            {/* Fondo: click fuera cierra */}
             <div className="absolute inset-0 themed-modal-overlay backdrop-blur-md" />
 
-            {/* Tarjeta flotante */}
+            {/* Ventana emergente */}
             <div
                 className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-2xl sm:rounded-3xl border themed-modal-surface animate-[scaleIn_0.25s_ease-out]"
+                data-modal-scroll
                 onClick={(e) => e.stopPropagation()}
             >
-                {/* Botón cerrar */}
                 <button
                     onClick={onClose}
                     aria-label="Cerrar"
@@ -62,24 +105,34 @@ const ProjectFloatWindow = ({ project, onClose }: ProjectFloatWindowProps) => {
                     </svg>
                 </button>
 
-                {/* Imagen del proyecto */}
                 <div className="relative w-full h-48 sm:h-64 md:h-80 overflow-hidden rounded-t-2xl sm:rounded-t-3xl">
                     <img
                         src={project.image}
                         alt={project.title}
                         className="h-full w-full object-cover"
+                        style={
+                            project.imageScale
+                                ? { transform: `scale(${project.imageScale})` }
+                                : undefined
+                        }
                         loading="lazy"
                     />
                     <div
                         className="absolute inset-0"
-                        style={{ background: 'linear-gradient(to top, var(--surface-solid), transparent, transparent)' }}
+                        style={{ background: "linear-gradient(to top, var(--surface-solid), transparent, transparent)" }}
                     />
-                    <span className="absolute top-3 left-3 sm:top-4 sm:left-4 rounded-full themed-badge border px-3 py-1 text-xs sm:text-sm font-semibold backdrop-blur-sm">
-                        {project.category}
-                    </span>
+                    <div className="absolute top-3 left-3 sm:top-4 sm:left-4 flex flex-wrap gap-2">
+                        <span className="rounded-full themed-badge border px-3 py-1 text-xs sm:text-sm font-semibold backdrop-blur-sm">
+                            {project.type}
+                        </span>
+                        {(project.status === "wip" || project.status === "improve") && (
+                            <span className="rounded-full bg-violet-600/90 text-white border border-cyan-400/40 px-3 py-1 text-xs sm:text-sm font-semibold backdrop-blur-sm shadow-[0_0_10px_rgba(34,211,238,0.35)]">
+                                {project.status === "wip" ? "En proceso" : "Por mejorar"}
+                            </span>
+                        )}
+                    </div>
                 </div>
 
-                {/* Contenido */}
                 <div className="p-4 sm:p-6 md:p-8">
                     <h3
                         id="project-modal-title"
@@ -92,7 +145,6 @@ const ProjectFloatWindow = ({ project, onClose }: ProjectFloatWindowProps) => {
                         {project.description}
                     </p>
 
-                    {/* Tecnologías */}
                     {project.technologies && project.technologies.length > 0 && (
                         <div className="mt-4 sm:mt-5">
                             <h4 className="text-xs sm:text-sm font-semibold uppercase tracking-wider themed-glow-text mb-2">
@@ -111,7 +163,6 @@ const ProjectFloatWindow = ({ project, onClose }: ProjectFloatWindowProps) => {
                         </div>
                     )}
 
-                    {/* Mayores cualidades / highlights */}
                     {project.highlights && project.highlights.length > 0 && (
                         <div className="mt-4 sm:mt-5">
                             <h4 className="text-xs sm:text-sm font-semibold uppercase tracking-wider themed-glow-text mb-2">
@@ -122,7 +173,7 @@ const ProjectFloatWindow = ({ project, onClose }: ProjectFloatWindowProps) => {
                                     <li key={i} className="flex items-start gap-2 text-sm sm:text-base themed-text-secondary">
                                         <span
                                             className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full"
-                                            style={{ background: 'var(--accent-gradient)' }}
+                                            style={{ background: "var(--accent-gradient)" }}
                                         />
                                         {point}
                                     </li>
@@ -131,7 +182,6 @@ const ProjectFloatWindow = ({ project, onClose }: ProjectFloatWindowProps) => {
                         </div>
                     )}
 
-                    {/* Botones de acción */}
                     <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3">
                         <a
                             href={project.link}
@@ -162,7 +212,6 @@ const ProjectFloatWindow = ({ project, onClose }: ProjectFloatWindowProps) => {
                 </div>
             </div>
 
-            {/* Animaciones */}
             <style>{`
                 @keyframes fadeIn {
                     from { opacity: 0; }
@@ -175,6 +224,8 @@ const ProjectFloatWindow = ({ project, onClose }: ProjectFloatWindowProps) => {
             `}</style>
         </div>
     );
+
+    return createPortal(modal, document.body);
 };
 
 export default ProjectFloatWindow;

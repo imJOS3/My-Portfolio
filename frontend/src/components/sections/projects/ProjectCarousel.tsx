@@ -77,16 +77,28 @@ const ProjectCarousel = ({ projects, onProjectClick }: ProjectCarouselProps) => 
                                         src={project.image}
                                         alt={project.title}
                                         className="w-full h-32 sm:h-40 md:h-48 lg:h-56 object-cover transition-transform duration-300 group-hover:scale-110"
+                                        style={
+                                            project.imageScale
+                                                ? { transform: `scale(${project.imageScale})` }
+                                                : undefined
+                                        }
                                     />
-                                    <div className="absolute top-3 right-3">
+                                    <div className="absolute top-3 right-3 flex flex-col items-end gap-1.5">
                                         <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                                            project.category === 'Frontend' ? 'bg-fuchsia-500/80 text-white' :
-                                            project.category === 'Backend' ? 'bg-blue-500/80 text-white' :
-                                            project.category === 'Fullstack' ? 'bg-green-500/80 text-white' :
-                                            'bg-yellow-500/80 text-white'
+                                            project.type === 'Frontend' ? 'bg-fuchsia-500/80 text-white' :
+                                            project.type === 'Backend' ? 'bg-blue-500/80 text-white' :
+                                            project.type === 'Fullstack' ? 'bg-green-500/80 text-white' :
+                                            project.type === 'SaaS' ? 'bg-cyan-500/80 text-white' :
+                                            project.type === 'ERP' ? 'bg-amber-500/80 text-white' :
+                                            'bg-purple-500/80 text-white'
                                         }`}>
-                                            {project.category}
+                                            {project.type}
                                         </span>
+                                        {(project.status === 'wip' || project.status === 'improve') && (
+                                            <span className="px-2 py-1 rounded-full text-xs font-semibold bg-violet-600/90 text-white border border-cyan-400/40 shadow-[0_0_10px_rgba(34,211,238,0.35)]">
+                                                {project.status === 'wip' ? 'En proceso' : 'Por mejorar'}
+                                            </span>
+                                        )}
                                     </div>
                                     {/* Overlay + texto "Ver detalles" al hacer hover */}
                                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300 flex items-center justify-center">
@@ -105,10 +117,7 @@ const ProjectCarousel = ({ projects, onProjectClick }: ProjectCarouselProps) => 
                                         {project.description}
                                     </p>
 
-                                    <div className="flex justify-between items-center mt-auto pt-2 themed-border-accent border-t">
-                                        <span className="themed-glow-text text-xs sm:text-sm font-medium">
-                                            {project.type}
-                                        </span>
+                                    <div className="flex justify-end items-center mt-auto pt-2 themed-border-accent border-t">
                                         <span className="themed-text-muted group-hover:themed-glow-text text-xs sm:text-sm font-semibold transition-colors">
                                             Ver detalles →
                                         </span>

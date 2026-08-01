@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { FaArrowDown } from "react-icons/fa";
 
 const Home = () => {
   const [text1, setText1] = useState("");
@@ -7,6 +8,7 @@ const Home = () => {
   const [showCursor1, setShowCursor1] = useState(true);
   const [showCursor2, setShowCursor2] = useState(false);
   const [showCursor3, setShowCursor3] = useState(false);
+  const [showBelow, setShowBelow] = useState(false);
 
   useEffect(() => {
     const fullText1 = "Hello world!";
@@ -40,6 +42,7 @@ const Home = () => {
                   if (index3 === fullText3.length) {
                     clearInterval(typing3);
                     setShowCursor3(false);
+                    setTimeout(() => setShowBelow(true), 300);
                   }
                 }, 100);
               }, 400);
@@ -52,13 +55,18 @@ const Home = () => {
     return () => clearInterval(typing1);
   }, []);
 
+  const scrollToProjects = () => {
+    document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <div
       className="
       min-h-screen flex flex-col items-center 
       justify-start md:justify-center 
-      pt-10 md:pt-0 pb-24 sm:pb-28"
+      pt-10 md:pt-0 pb-24 sm:pb-28 gap-10 md:gap-14"
     >
+      {/* Animación original */}
       <div className="relative">
         <span className="absolute -inset-1 rounded-2xl bg-gradient-to-tr from-cyan-400 via-purple-600 to-fuchsia-500 blur-xl opacity-30"></span>
 
@@ -76,6 +84,40 @@ const Home = () => {
             {showCursor3 && <span className="text-cyan-300 animate-pulse">|</span>}
           </p>
         </div>
+      </div>
+
+      {/* Aparece solo al terminar la animación */}
+      <div
+        className={`w-full max-w-2xl px-4 text-center transition-all duration-700 ease-out ${
+          showBelow
+            ? "opacity-100 translate-y-0"
+            : "opacity-0 translate-y-4 pointer-events-none"
+        }`}
+      >
+        <p className="text-indigo-200/90 text-sm sm:text-base mb-5 leading-relaxed">
+          Fullstack developer en progreso · Enfocado en backend y sistemas reales
+        </p>
+
+        <div className="flex flex-wrap justify-center gap-2 mb-8">
+          {["Node.js", "Java", "Spring Boot", "React", "PostgreSQL", "Docker"].map((tech) => (
+            <span
+              key={tech}
+              className="text-xs sm:text-sm px-3 py-1.5 rounded-lg border border-cyan-400/25 bg-[#05010f]/50 text-cyan-100/90"
+            >
+              {tech}
+            </span>
+          ))}
+        </div>
+
+        <button
+          type="button"
+          onClick={scrollToProjects}
+          className="inline-flex flex-col items-center gap-1 text-fuchsia-300/80 hover:text-fuchsia-200 transition-colors"
+          aria-label="Ir a proyectos"
+        >
+          <span className="text-xs tracking-widest uppercase">Scroll</span>
+          <FaArrowDown className="animate-bounce" />
+        </button>
       </div>
     </div>
   );

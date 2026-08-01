@@ -209,10 +209,19 @@ export const NavProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const el = document.getElementById(id);
     if (!el) return;
 
-    clickLockUntil.current = Date.now() + 800;
+    clickLockUntil.current = Date.now() + 1000;
     setActiveSection(id);
     window.sessionStorage.setItem(LAST_SECTION_STORAGE_KEY, id);
-    el.scrollIntoView({ behavior: "smooth", block: "start" });
+
+    // Centrar el contenido interno (no el top de la section min-h-screen)
+    const target = (el.firstElementChild as HTMLElement | null) ?? el;
+    const rect = target.getBoundingClientRect();
+    const contentCenter = window.scrollY + rect.top + rect.height / 2;
+    // Navbar fija en móvil: desplaza un poco el centro visual
+    const navCompensation = window.matchMedia("(max-width: 767px)").matches ? 32 : 0;
+    const top = Math.max(0, contentCenter - window.innerHeight / 2 - navCompensation);
+
+    window.scrollTo({ top, behavior: "smooth" });
     setOpen(false);
   };
 
