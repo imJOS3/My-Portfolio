@@ -95,17 +95,6 @@ Hay un `render.yaml` en `backend/` para despliegue en Render.
 - Home, Projects, About, Skills, Certificates, Contact
 - FAQs, formulario de contacto y “Mis hobbies” (favoritos) consumen la API
 
-## Primer push a GitHub
-
-1. Crea un repositorio vacío en GitHub.
-2. En la raíz del proyecto:
-
-```bash
-git remote add origin https://github.com/TU_USUARIO/TU_REPO.git
-git branch -M main
-git push -u origin main
-```
-
 ## Licencia
 
 Proyecto personal — uso libre para referencia / portfolio.
