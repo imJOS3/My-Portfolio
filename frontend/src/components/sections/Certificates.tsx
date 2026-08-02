@@ -16,16 +16,16 @@ type Certificate = {
 const Certificates = () => {
     const certificates: Certificate[] = [
         {
-            title: "Fundamentos Básicos en Programación Java",
+            title: "Java Programming Fundamentals",
             issuer: "SENA",
-            date: "Julio 2020",
+            date: "July 2020",
             icon: <FaJava className="text-orange-400" />,
             pdf: javaBasico,
         },
         {
-            title: "Diseñar Páginas Web con HTML y JavaScript",
+            title: "Web Design with HTML and JavaScript",
             issuer: "SENA",
-            date: "Septiembre 2020",
+            date: "September 2020",
             icon: (
                 <span className="flex items-center gap-1">
                     <SiHtml5 className="text-orange-400" />
@@ -37,7 +37,7 @@ const Certificates = () => {
         {
             title: "Java Fundamentals",
             issuer: "Oracle",
-            date: "Noviembre 2023",
+            date: "November 2023",
             icon: <FaJava className="text-orange-400" />,
             pdf: javaOracle,
         },
@@ -65,12 +65,12 @@ const Certificates = () => {
         >
             <div className="text-center mb-10">
                 <h1 className="text-4xl font-bold text-fuchsia-300 drop-shadow-neon">
-                    Certificados & Logros
+                    Certificates & Achievements
                 </h1>
 
                 <p className="text-indigo-200 mt-3">
-                    Certificaciones que respaldan mis conocimientos en desarrollo
-                    de software y ciberseguridad.
+                    Certifications that support my skills in software development
+                    and cybersecurity.
                 </p>
             </div>
 
@@ -113,7 +113,7 @@ const Certificates = () => {
                                 onClick={(e: React.MouseEvent<HTMLAnchorElement>) => e.stopPropagation()}
                                 className="text-xs sm:text-sm text-fuchsia-300 group-hover:text-fuchsia-200 group-hover:underline transition-colors"
                             >
-                                Ver certificado →
+                                View certificate →
                             </a>
                         </div>
 
@@ -127,28 +127,28 @@ const Certificates = () => {
                     <h2 className="text-3xl font-bold text-fuchsia-300">
                         {certificates.length}
                     </h2>
-                    <p className="text-indigo-200">Certificados</p>
+                    <p className="text-indigo-200">Certificates</p>
                 </div>
 
                 <div className="bg-black/50 rounded-xl p-4 text-center border border-fuchsia-500/20">
                     <h2 className="text-3xl font-bold text-fuchsia-300">
                         {new Set(certificates.map(c => c.issuer)).size}
                     </h2>
-                    <p className="text-indigo-200">Instituciones</p>
+                    <p className="text-indigo-200">Institutions</p>
                 </div>
 
                 <div className="bg-black/50 rounded-xl p-4 text-center border border-fuchsia-500/20">
                     <h2 className="text-3xl font-bold text-fuchsia-300">
                         2020-2026
                     </h2>
-                    <p className="text-indigo-200">Periodo</p>
+                    <p className="text-indigo-200">Period</p>
                 </div>
 
                 <div className="bg-black/50 rounded-xl p-4 text-center border border-fuchsia-500/20">
                     <h2 className="text-3xl font-bold text-fuchsia-300">
                         100%
                     </h2>
-                    <p className="text-indigo-200">Completados</p>
+                    <p className="text-indigo-200">Completed</p>
                 </div>
 
             </div>

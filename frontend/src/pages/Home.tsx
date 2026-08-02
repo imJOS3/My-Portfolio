@@ -72,7 +72,7 @@ export default function HomePage() {
         <AnimatedSection
           id="home"
           animation="fade-scale"
-          className="flex items-center justify-center px-4 md:px-8 min-h-[calc(100vh-4rem)] md:min-h-screen pt-24 md:pt-0"
+          className="flex items-center justify-center px-4 md:px-8 min-h-dvh pt-16 md:pt-0"
           innerClassName="w-full max-w-7xl mx-auto"
         >
           <Home />

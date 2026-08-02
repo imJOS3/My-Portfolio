@@ -13,7 +13,7 @@ const Home = () => {
   useEffect(() => {
     const fullText1 = "Hello world!";
     const fullText2 = "I'm Jose Benjumea";
-    const fullText3 = "Software engineer";
+    const fullText3 = "Software Engineering student";
 
     let index1 = 0;
     const typing1 = setInterval(() => {
@@ -62,11 +62,10 @@ const Home = () => {
   return (
     <div
       className="
-      min-h-screen flex flex-col items-center 
-      justify-start md:justify-center 
-      pt-10 md:pt-0 pb-24 sm:pb-28 gap-10 md:gap-14"
+      w-full min-h-[calc(100dvh-6rem)] md:min-h-[calc(100dvh-2rem)]
+      flex flex-col items-center justify-center
+      py-6 gap-8 md:gap-12"
     >
-      {/* Animación original */}
       <div className="relative">
         <span className="absolute -inset-1 rounded-2xl bg-gradient-to-tr from-cyan-400 via-purple-600 to-fuchsia-500 blur-xl opacity-30"></span>
 
@@ -86,7 +85,6 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Aparece solo al terminar la animación */}
       <div
         className={`w-full max-w-2xl px-4 text-center transition-all duration-700 ease-out ${
           showBelow
@@ -95,7 +93,7 @@ const Home = () => {
         }`}
       >
         <p className="text-indigo-200/90 text-sm sm:text-base mb-5 leading-relaxed">
-          Fullstack developer en progreso · Enfocado en backend y sistemas reales
+          Fullstack developer focused on backend and real-world systems
         </p>
 
         <div className="flex flex-wrap justify-center gap-2 mb-8">
@@ -113,7 +111,7 @@ const Home = () => {
           type="button"
           onClick={scrollToProjects}
           className="inline-flex flex-col items-center gap-1 text-fuchsia-300/80 hover:text-fuchsia-200 transition-colors"
-          aria-label="Ir a proyectos"
+          aria-label="Go to projects"
         >
           <span className="text-xs tracking-widest uppercase">Scroll</span>
           <FaArrowDown className="animate-bounce" />

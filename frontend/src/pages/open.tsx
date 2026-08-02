@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
+import BackendUnavailable from "../components/BackendUnavailable";
+import { BACKEND_AVAILABLE } from "../config/backend";
 
 const baseUrl = import.meta.env.VITE_URL_BASE_BACKEND;
 
@@ -17,20 +19,20 @@ interface FavoriteItem {
 
 const OpenFavorites = () => {
   const [favoriteItems, setFavoriteItems] = useState<FavoriteItem[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(BACKEND_AVAILABLE);
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (!BACKEND_AVAILABLE) return;
+
     const fetchFavorites = async () => {
       setLoading(true);
       setError("");
       try {
-        // ✅ Opcional: agrega ?limit=9999 si tu backend tiene paginación
         const res = await fetch(`${baseUrl}/api/favorite-items/?limit=9999`);
-        if (!res.ok) throw new Error("Error al cargar favoritos");
+        if (!res.ok) throw new Error("Failed to load favorites");
         const data = await res.json();
-        console.log("CMS favoritos response:", data);
 
         const items = Array.isArray(data)
           ? data
@@ -47,7 +49,7 @@ const OpenFavorites = () => {
           title: item.titulo,
           type: item.tipo
             ? item.tipo.charAt(0).toUpperCase() + item.tipo.slice(1)
-            : "Otro",
+            : "Other",
           summary: item.resumen,
           description: item.descripcion,
           keywords: item.palabras_clave
@@ -58,8 +60,8 @@ const OpenFavorites = () => {
         }));
 
         setFavoriteItems(mappedItems);
-      } catch (err) {
-        setError("No se pudieron cargar los favoritos.");
+      } catch {
+        setError("Could not load favorites.");
       } finally {
         setLoading(false);
       }
@@ -69,22 +71,25 @@ const OpenFavorites = () => {
 
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-start bg-gradient-to-br from-gray-900 via-indigo-900 to-fuchsia-700 py-6 overflow-y-auto">
-      {/* Botón de volver */}
       <button
         onClick={() => navigate(-1)}
         className="absolute top-4 left-4 flex items-center gap-2 px-3 py-2 bg-black/40 hover:bg-black/70 text-fuchsia-300 rounded-full shadow-lg transition-all duration-200"
       >
         <ArrowLeft size={20} />
-        <span className="text-sm font-semibold">Volver</span>
+        <span className="text-sm font-semibold">Back</span>
       </button>
 
       <h1 className="text-3xl font-bold text-fuchsia-300 mb-6 drop-shadow-neon text-center">
-        Mis series, juegos, animes favoritos
+        My favorite series, games & anime
       </h1>
 
-      {loading ? (
+      {!BACKEND_AVAILABLE ? (
+        <div className="w-full max-w-md px-4 mt-8">
+          <BackendUnavailable />
+        </div>
+      ) : loading ? (
         <div className="text-fuchsia-300 text-center py-8 animate-pulse">
-          Cargando favoritos...
+          Loading favorites...
         </div>
       ) : error ? (
         <div className="text-red-400 font-semibold mb-4 text-center">
@@ -160,7 +165,7 @@ function PosterCard({
             rel="noopener noreferrer"
             className="inline-block px-2 py-1 bg-fuchsia-500 hover:bg-fuchsia-700 text-white font-bold rounded-lg shadow-lg transition-all duration-200 text-xs"
           >
-            Ver detalle
+            View details
           </a>
         )}
       </div>

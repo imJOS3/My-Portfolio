@@ -97,7 +97,7 @@ const ProjectFloatWindow = ({ project, onClose }: ProjectFloatWindowProps) => {
             >
                 <button
                     onClick={onClose}
-                    aria-label="Cerrar"
+                    aria-label="Close"
                     className="absolute top-3 right-3 sm:top-4 sm:right-4 z-10 flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full themed-surface text-[var(--text-primary)] hover:border-cyan-400/50 transition-colors"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-5 w-5">
@@ -127,7 +127,7 @@ const ProjectFloatWindow = ({ project, onClose }: ProjectFloatWindowProps) => {
                         </span>
                         {(project.status === "wip" || project.status === "improve") && (
                             <span className="rounded-full bg-violet-600/90 text-white border border-cyan-400/40 px-3 py-1 text-xs sm:text-sm font-semibold backdrop-blur-sm shadow-[0_0_10px_rgba(34,211,238,0.35)]">
-                                {project.status === "wip" ? "En proceso" : "Por mejorar"}
+                                {project.status === "wip" ? "In progress" : "Needs improvement"}
                             </span>
                         )}
                     </div>
@@ -148,7 +148,7 @@ const ProjectFloatWindow = ({ project, onClose }: ProjectFloatWindowProps) => {
                     {project.technologies && project.technologies.length > 0 && (
                         <div className="mt-4 sm:mt-5">
                             <h4 className="text-xs sm:text-sm font-semibold uppercase tracking-wider themed-glow-text mb-2">
-                                Tecnologías
+                                Technologies
                             </h4>
                             <div className="flex flex-wrap gap-2">
                                 {project.technologies.map((tech) => (
@@ -166,7 +166,7 @@ const ProjectFloatWindow = ({ project, onClose }: ProjectFloatWindowProps) => {
                     {project.highlights && project.highlights.length > 0 && (
                         <div className="mt-4 sm:mt-5">
                             <h4 className="text-xs sm:text-sm font-semibold uppercase tracking-wider themed-glow-text mb-2">
-                                Lo más destacado
+                                Highlights
                             </h4>
                             <ul className="space-y-1.5">
                                 {project.highlights.map((point, i) => (
@@ -192,8 +192,8 @@ const ProjectFloatWindow = ({ project, onClose }: ProjectFloatWindowProps) => {
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="h-5 w-5">
                                 <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.09 3.29 9.4 7.86 10.93.58.1.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.7-3.88-1.54-3.88-1.54-.53-1.34-1.29-1.7-1.29-1.7-1.05-.72.08-.71.08-.71 1.17.08 1.78 1.2 1.78 1.2 1.03 1.77 2.71 1.26 3.37.96.1-.75.4-1.26.73-1.55-2.55-.29-5.23-1.28-5.23-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.79 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.24 2.76.12 3.05.74.81 1.19 1.83 1.19 3.09 0 4.41-2.69 5.38-5.25 5.67.41.36.78 1.07.78 2.15 0 1.56-.01 2.81-.01 3.19 0 .31.21.67.8.56A10.52 10.52 0 0 0 23.5 12c0-6.35-5.15-11.5-11.5-11.5Z" />
                             </svg>
-                            Ver código
-                        </a>
+                            View code
+                            </a>
 
                         {project.demoLink && (
                             <a
@@ -205,7 +205,7 @@ const ProjectFloatWindow = ({ project, onClose }: ProjectFloatWindowProps) => {
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-5 w-5">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H18m0 0v4.5M18 6l-8 8M6 12v6a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-4" />
                                 </svg>
-                                Ver demo
+                                View demo
                             </a>
                         )}
                     </div>

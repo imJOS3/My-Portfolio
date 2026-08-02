@@ -7,6 +7,7 @@ import NotFound from "./pages/NotFound";
 const ContactmePage = lazy(() => import("./pages/contactme"));
 const FaqPage = lazy(() => import("./pages/Faqs"));
 const OpenPage = lazy(() => import("./pages/open"));
+const ThemePage = lazy(() => import("./pages/Theme"));
 const HomePage = lazy(() => import("./pages/Home"));
 
 function App() {
@@ -14,12 +15,13 @@ function App() {
         <ThemeProvider>
             <Router>
                 <NavProvider>
-                    <Suspense fallback={<div className="text-white text-center py-20">Cargando...</div>}>
+                    <Suspense fallback={<div className="text-white text-center py-20">Loading...</div>}>
                         <Routes>
                             <Route path="/" element={<HomePage />} />
                             <Route path="/contactme" element={<ContactmePage />} />
                             <Route path="/faq" element={<FaqPage />} />
                             <Route path="/open" element={<OpenPage />} />
+                            <Route path="/theme" element={<ThemePage />} />
                             <Route path="*" element={<NotFound />} />
                         </Routes>
                     </Suspense>

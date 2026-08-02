@@ -96,19 +96,19 @@ const ProjectCarousel = ({ projects, onProjectClick }: ProjectCarouselProps) => 
                                         </span>
                                         {(project.status === 'wip' || project.status === 'improve') && (
                                             <span className="px-2 py-1 rounded-full text-xs font-semibold bg-violet-600/90 text-white border border-cyan-400/40 shadow-[0_0_10px_rgba(34,211,238,0.35)]">
-                                                {project.status === 'wip' ? 'En proceso' : 'Por mejorar'}
+                                                {project.status === 'wip' ? 'In progress' : 'Needs improvement'}
                                             </span>
                                         )}
                                     </div>
                                     {/* Overlay + texto "Ver detalles" al hacer hover */}
                                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300 flex items-center justify-center">
                                         <span className="opacity-0 group-hover:opacity-100 -translate-y-1 group-hover:translate-y-0 transition-all duration-300 text-white text-sm sm:text-base font-semibold tracking-wide">
-                                            Ver detalles →
+                                            View details →
                                         </span>
                                     </div>
                                 </div>
 
-                                {/* Contenido del proyecto */}
+                                {/* Project content */}
                                 <div className="p-4 sm:p-5 flex flex-col flex-grow">
                                     <h3 className="font-bold text-lg sm:text-xl md:text-2xl themed-glow-text mb-2 transition-colors line-clamp-2">
                                         {project.title}
@@ -119,7 +119,7 @@ const ProjectCarousel = ({ projects, onProjectClick }: ProjectCarouselProps) => 
 
                                     <div className="flex justify-end items-center mt-auto pt-2 themed-border-accent border-t">
                                         <span className="themed-text-muted group-hover:themed-glow-text text-xs sm:text-sm font-semibold transition-colors">
-                                            Ver detalles →
+                                            View details →
                                         </span>
                                     </div>
                                 </div>
@@ -135,7 +135,7 @@ const ProjectCarousel = ({ projects, onProjectClick }: ProjectCarouselProps) => 
                     <button
                         onClick={prevSlide}
                         className="absolute left-2 sm:left-4 top-1/2 transform -translate-y-1/2 themed-surface hover:border-cyan-400/50 text-[var(--text-primary)] p-2 sm:p-3 rounded-full transition-all duration-200 z-10"
-                        aria-label="Proyecto anterior"
+                        aria-label="Previous project"
                     >
                         <svg className="w-4 h-4 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -145,7 +145,7 @@ const ProjectCarousel = ({ projects, onProjectClick }: ProjectCarouselProps) => 
                     <button
                         onClick={nextSlide}
                         className="absolute right-2 sm:right-4 top-1/2 transform -translate-y-1/2 themed-surface hover:border-cyan-400/50 text-[var(--text-primary)] p-2 sm:p-3 rounded-full transition-all duration-200 z-10"
-                        aria-label="Siguiente proyecto"
+                        aria-label="Next project"
                     >
                         <svg className="w-4 h-4 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />

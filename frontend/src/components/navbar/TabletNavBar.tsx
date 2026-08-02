@@ -1,6 +1,6 @@
 import React from "react";
 import ProfileImage from "../../assets/pfpPorfolioCartoonCut.png";
-import { FaChevronLeft, FaChevronRight, FaBars, FaTimes, FaComments } from "react-icons/fa";
+import { FaChevronLeft, FaChevronRight, FaBars, FaTimes, FaComments, FaPalette } from "react-icons/fa";
 import { useNavState } from "./useNavState";
 
 const TabletNavBar: React.FC = () => {
@@ -224,14 +224,22 @@ const TabletNavBar: React.FC = () => {
           </ul>
 
           {/* Extra */}
-          <div className="mt-6">
+          <div className="mt-6 space-y-2">
+            <a
+              href="/theme"
+              className="w-full inline-flex items-center gap-2 justify-center px-4 py-3 
+              border border-cyan-400/40 text-cyan-200 font-bold rounded-lg
+              hover:border-fuchsia-400/50 transition-all"
+            >
+              <FaPalette /> Colors
+            </a>
             <a
               href="/open"
               className="w-full inline-flex items-center gap-2 justify-center px-4 py-3 
               bg-gradient-to-r from-cyan-400 to-fuchsia-600 text-[#05010f] font-bold 
               rounded-lg shadow-lg hover:from-cyan-300 hover:to-fuchsia-500 transition-all"
             >
-              <FaComments /> Mis hobbies
+              <FaComments /> My hobbies
             </a>
           </div>
         </div>

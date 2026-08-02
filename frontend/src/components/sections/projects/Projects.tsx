@@ -10,7 +10,7 @@ const projectList: Project[] = [
     {
         title: "EcoTurismo",
         description:
-            "Plataforma de reservas de ecoturismo estilo Airbnb/Booking. Permite a anfitriones publicar alojamientos y unidades, y a turistas explorar, reservar y dejar reseñas, todo con paneles diferenciados según el rol del usuario.",
+            "An ecotourism booking platform inspired by Airbnb/Booking. Hosts publish stays and units, while travelers explore, book, and leave reviews, with role-based dashboards for each user type.",
         image: ecoturismoImg,
         imageScale: 1.12,
         link: "https://github.com/imJOS3/ECOTURIOSMO-WEB-APP-",
@@ -18,16 +18,16 @@ const projectList: Project[] = [
         category: "Fullstack",
         technologies: ["React", "Vite", "Node.js", "Express", "PostgreSQL", "Zustand", "Redis"],
         highlights: [
-            "Paneles diferenciados por rol: turista, anfitrión y administrador",
-            "Autenticación centralizada con JWT y manejo de estado global con Zustand",
-            "Carga múltiple de imágenes con vista previa antes de publicar",
-            "Arquitectura backend modular (auth, reservas, pagos, reseñas, moderación)",
+            "Role-based dashboards for tourists, hosts, and admins",
+            "Centralized JWT auth and global state with Zustand",
+            "Multi-image upload with preview before publishing",
+            "Modular backend (auth, bookings, payments, reviews, moderation)",
         ],
     },
     {
         title: "Old West",
         description:
-            "Plataforma web para una barbería, pensada para digitalizar la operación diaria del negocio: los clientes reservan su cita online eligiendo servicio y horario disponible, mientras que el dueño gestiona el personal, los turnos y la agenda desde un panel propio.",
+            "A web platform for a barbershop that digitizes daily operations: clients book appointments online by choosing a service and available slot, while the owner manages staff, shifts, and the schedule from a private dashboard.",
         image: oldWestImg,
         imageScale: 1.1,
         link: "https://github.com/imJOS3/old-west-",
@@ -35,16 +35,16 @@ const projectList: Project[] = [
         category: "Fullstack",
         technologies: ["Next.js", "TypeScript", "Prisma"],
         highlights: [
-            "Sistema de reserva de citas online para los clientes de la barbería",
-            "Panel de gestión de personal y turnos de trabajo",
-            "Base de datos relacional tipada de extremo a extremo con Prisma + TypeScript",
-            "Construido sobre Next.js para un frontend rápido y con buen SEO",
+            "Online appointment booking for barbershop clients",
+            "Staff and work-shift management panel",
+            "End-to-end typed relational database with Prisma + TypeScript",
+            "Built on Next.js for a fast frontend with strong SEO",
         ],
     },
     {
         title: "Bingo Online",
         description:
-            "Juego de bingo multijugador en tiempo real: cartones interactivos, cuenta regresiva de partida, chat, listado de jugadores y ganadores, con patrones de victoria (como completar una columna) visibles en pantalla.",
+            "A real-time multiplayer bingo game with interactive cards, a match countdown, chat, player and winner lists, and on-screen win patterns such as completing a column.",
         image: bingoOnlineImg,
         imageScale: 1.1,
         link: "https://github.com/imJOS3/BINGO-2",
@@ -52,16 +52,16 @@ const projectList: Project[] = [
         category: "Fullstack",
         technologies: ["Preact", "Vite", "Tailwind", "Socket.io", "Zustand", "Axios"],
         highlights: [
-            "Partidas en tiempo real con Socket.io",
-            "Cartón interactivo 5x5 con casilla FREE y letras B-I-N-G-O",
-            "Panel de jugadores, ganadores y chat en vivo",
-            "Indicador de patrón objetivo y temporizador de fin de partida",
+            "Real-time matches with Socket.io",
+            "Interactive 5x5 card with FREE cell and B-I-N-G-O letters",
+            "Live players panel, winners list, and chat",
+            "Target-pattern indicator and end-of-match timer",
         ],
     },
     {
         title: "NexusFlow",
         description:
-            "Plataforma SaaS modular de gestión empresarial que centraliza CRM, reservas, inventario, analítica y automatizaciones en un solo panel, pensada para escalar como producto multi-módulo.",
+            "A modular SaaS business-management platform that centralizes CRM, bookings, inventory, analytics, and automations in one dashboard, designed to scale as a multi-module product.",
         image: projectWipImg,
         status: "wip",
         link: "https://github.com/imJOS3/nexusflow",
@@ -69,16 +69,16 @@ const projectList: Project[] = [
         category: "Fullstack",
         technologies: ["Next.js 14", "TypeScript", "NestJS", "PostgreSQL", "Prisma", "Redis", "Docker"],
         highlights: [
-            "8 módulos de negocio integrados: CRM, reservas, inventario, finanzas, soporte y más",
-            "Monorepo escalable con Turborepo y pnpm workspaces",
-            "Autenticación con JWT y control de acceso basado en roles (RBAC)",
-            "Infraestructura lista para producción con Docker y CI en GitHub Actions",
+            "8 integrated business modules: CRM, bookings, inventory, finance, support, and more",
+            "Scalable monorepo with Turborepo and pnpm workspaces",
+            "JWT authentication and role-based access control (RBAC)",
+            "Production-ready infrastructure with Docker and GitHub Actions CI",
         ],
     },
     {
         title: "Battio Lab",
         description:
-            "API REST para la gestión operativa de un taller de scooters eléctricas: control de empleados, usuarios del sistema y, próximamente, inventario de repuestos y mantenimiento.",
+            "A REST API for the day-to-day operations of an electric scooter workshop: employee and system-user management, with spare-parts inventory and maintenance coming next.",
         image: projectWipImg,
         status: "improve",
         link: "https://github.com/imJOS3/battio-lab",
@@ -86,16 +86,16 @@ const projectList: Project[] = [
         category: "Backend",
         technologies: ["Python", "Flask", "MySQL"],
         highlights: [
-            "API REST construida con Flask siguiendo buenas prácticas de organización por módulos",
-            "Gestión de empleados y usuarios con roles del sistema",
-            "Modelo de datos relacional en MySQL, listo para escalar a inventario y mantenimiento",
-            "Roadmap definido: autenticación JWT y conexión con frontend",
+            "REST API built with Flask following modular best practices",
+            "Employee and user management with system roles",
+            "Relational MySQL data model ready to grow into inventory and maintenance",
+            "Clear roadmap: JWT auth and frontend integration",
         ],
     },
     {
-        title: "Agencia de Eventos — ERP",
+        title: "Event Agency — ERP",
         description:
-            "Sistema ERP colaborativo para gestionar una agencia de eventos de punta a punta: clientes y contratos, inventario de alquiler, facturación, contabilidad y un portal para que los clientes contraten servicios directamente.",
+            "A collaborative ERP to manage an event agency end to end: clients and contracts, rental inventory, invoicing, accounting, and a portal where clients can hire services directly.",
         image: projectWipImg,
         status: "wip",
         link: "https://github.com/imJOS3/Event-Agency-msvc",
@@ -103,10 +103,10 @@ const projectList: Project[] = [
         category: "Fullstack",
         technologies: ["Java 21", "Spring Boot", "Node.js", "React", "Vite", "MySQL", "Docker"],
         highlights: [
-            "5 módulos de negocio: clientes, inventario, facturación, contabilidad y portal del cliente",
-            "Arquitectura híbrida: microservicios en Spring Boot + BFF en Node.js/Express",
-            "Contenedorizado con Docker Compose para despliegue consistente",
-            "Desarrollado en equipo, aplicando buenas prácticas de control de versiones con Git",
+            "5 business modules: clients, inventory, invoicing, accounting, and client portal",
+            "Hybrid architecture: Spring Boot microservices + Node.js/Express BFF",
+            "Containerized with Docker Compose for consistent deployments",
+            "Built as a team with solid Git version-control practices",
         ],
     },
 ];
@@ -139,16 +139,16 @@ const Projects = () => {
             >
                 <div className="text-center w-full max-w-7xl">
                     <h2 className="text-xl xs:text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold mb-2 sm:mb-4 themed-accent-text drop-shadow-[0_0_16px_var(--accent-cyan)] leading-tight break-words">
-                        Mis Proyectos
+                        My Projects
                     </h2>
                     <p className="themed-text-secondary text-xs sm:text-sm md:text-base lg:text-lg max-w-2xl mx-auto px-2">
-                        Descubre mis trabajos más recientes en desarrollo web y aplicaciones móviles
+                        A selection of my latest work in web development and fullstack applications
                     </p>
                 </div>
 
                 <div className="themed-surface backdrop-blur-md rounded-2xl px-4 sm:px-6 py-2 sm:py-3">
                     <p className="themed-text-primary text-xs sm:text-sm md:text-base">
-                        Mostrando <span className="themed-glow-text font-bold">{projectList.length}</span> proyectos destacados
+                        Showing <span className="themed-glow-text font-bold">{projectList.length}</span> featured projects
                     </p>
                 </div>
 

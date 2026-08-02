@@ -1,6 +1,6 @@
 import React from "react";
 import ProfileImage from "../../assets/pfpPorfolioCartoonCut.png";
-import { FaComments, FaBars, FaTimes } from "react-icons/fa";
+import { FaComments, FaBars, FaTimes, FaPalette } from "react-icons/fa";
 import { useNavState } from "./useNavState";
 
 const MobileNavBar: React.FC = () => {
@@ -65,7 +65,7 @@ const MobileNavBar: React.FC = () => {
           <div className="flex gap-2 items-center">
             <button
               onClick={() => setOpen(true)}
-              aria-label="Abrir menú"
+              aria-label="Open menu"
               className="p-2 rounded-lg bg-gradient-to-tr from-cyan-400 to-fuchsia-600 text-[#05010f] shadow-lg"
             >
               <FaBars size={18} />
@@ -86,7 +86,7 @@ const MobileNavBar: React.FC = () => {
           {/* Button to focus current active section */}
           <button
             onClick={() => scrollTo(activeSection)}
-            aria-label="Ir a la sección activa"
+            aria-label="Go to active section"
             className={`px-3 py-2 bg-[#12042e]/80 text-[#22d3ee] rounded-md font-bold 
               transition-all duration-300 transform
               ${activePulse ? "scale-105 shadow-md" : "scale-100"}`}
@@ -105,7 +105,7 @@ const MobileNavBar: React.FC = () => {
         <div
           className="absolute inset-0 bg-black/60"
           onClick={() => setOpen(false)}
-          aria-label="Cerrar menú"
+          aria-label="Close menu"
         />
 
         {/* PANEL */}
@@ -128,7 +128,7 @@ const MobileNavBar: React.FC = () => {
             <button
               onClick={() => setOpen(false)}
               className="ml-auto p-2 rounded-lg bg-gradient-to-tr from-cyan-400 to-fuchsia-600 text-[#05010f] shadow-lg"
-              aria-label="Cerrar menú"
+              aria-label="Close menu"
             >
               <FaTimes size={18} />
             </button>
@@ -163,14 +163,21 @@ const MobileNavBar: React.FC = () => {
           </ul>
 
           {/* Link Extra */}
-          <div className="mt-4">
+          <div className="mt-4 space-y-2">
+            <a
+              href="/theme"
+              className="w-full inline-flex items-center gap-2 justify-center px-4 py-3 
+              border border-cyan-400/40 text-cyan-200 font-bold rounded-lg"
+            >
+              <FaPalette /> Colors
+            </a>
             <a
               href="/open"
               className="w-full inline-flex items-center gap-2 justify-center px-4 py-3 
               bg-gradient-to-r from-cyan-400 to-fuchsia-600 text-[#05010f] font-bold 
               rounded-lg shadow-lg"
             >
-              <FaComments /> Mis hobbies
+              <FaComments /> My hobbies
             </a>
           </div>
         </div>

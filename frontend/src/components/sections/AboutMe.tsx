@@ -22,9 +22,7 @@ const AboutMe = () => {
             ref={ref}
             className={`section-animate${visible ? ' visible' : ''} bg-black/70 backdrop-blur-md text-white p-4 sm:p-6 md:p-8 rounded-2xl shadow-2xl border border-fuchsia-400/40 w-full max-w-6xl mx-auto flex flex-col scroll-mt-[50vh]`}
         >
-            {/* Contenido Principal */}
             <div className="flex flex-col lg:flex-row items-center gap-5 sm:gap-6 md:gap-8">
-                {/* Imagen */}
                 <div className="flex-shrink-0 flex justify-center">
                     <img
                         src={ProfileImage}
@@ -33,51 +31,55 @@ const AboutMe = () => {
                     />
                 </div>
 
-                {/* Información */}
                 <div className="flex-1 text-center lg:text-left">
                     <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-2 sm:mb-3 text-fuchsia-300 drop-shadow-neon">
-                        Sobre Mí
+                        About Me
                     </h2>
                     <p className="text-indigo-200 leading-relaxed text-sm sm:text-base mb-3">
-                        ¡Hola! Soy{" "}
-                        <strong className="text-white">Jose Benjumea</strong>, un
-                        desarrollador frontend apasionado por crear experiencias
-                        visuales intuitivas y atractivas. Me especializo en{" "}
-                        <span className="text-fuchsia-300 font-semibold">React</span>,{" "}
-                        <span className="text-fuchsia-300 font-semibold">TypeScript</span> y{" "}
-                        <span className="text-fuchsia-300 font-semibold">Tailwind CSS</span>.
+                        Hi! I'm{" "}
+                        <strong className="text-white">Jose Benjumea</strong>, a
+                        Software Engineering student in my{" "}
+                        <span className="text-fuchsia-300 font-semibold">final semesters</span>{" "}
+                        at{" "}
+                        <span className="text-fuchsia-300 font-semibold">Universidad Manuela Beltrán</span>.
+                        I'm actively looking for a{" "}
+                        <span className="text-fuchsia-300 font-semibold">developer internship</span>{" "}
+                        to grow in a real engineering team.
                     </p>
 
                     <p className="text-indigo-200 text-sm sm:text-base mb-4">
-                        Mi objetivo es crecer profesionalmente en el desarrollo
-                        web, crear aplicaciones optimizadas y seguir aprendiendo
-                        tecnologías modernas.
+                        I build fullstack applications with a strong interest in backend
+                        and real-world systems. I work mainly with{" "}
+                        <span className="text-fuchsia-300 font-semibold">React</span>,{" "}
+                        <span className="text-fuchsia-300 font-semibold">Node.js</span>,{" "}
+                        <span className="text-fuchsia-300 font-semibold">Java</span>, and{" "}
+                        <span className="text-fuchsia-300 font-semibold">Spring Boot</span>.
                     </p>
 
                     <div className="mb-4 sm:mb-5">
                         <h3 className="text-base sm:text-lg md:text-xl font-semibold text-fuchsia-200 drop-shadow-neon mb-2">
-                            Habilidades Clave:
+                            Key Skills:
                         </h3>
                         <ul className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-indigo-100 text-sm sm:text-base">
                             <li className="flex items-start">
                                 <span className="text-fuchsia-400 mr-2">•</span>
-                                Desarrollo de interfaces modernas con React y TypeScript
+                                Modern interfaces with React and TypeScript
                             </li>
                             <li className="flex items-start">
                                 <span className="text-fuchsia-400 mr-2">•</span>
-                                Estilización con Tailwind CSS
+                                Backend APIs with Node.js and Spring Boot
                             </li>
                             <li className="flex items-start">
                                 <span className="text-fuchsia-400 mr-2">•</span>
-                                Optimización de rendimiento en aplicaciones web
+                                Relational databases (PostgreSQL, MySQL)
                             </li>
                             <li className="flex items-start">
                                 <span className="text-fuchsia-400 mr-2">•</span>
-                                Integración de APIs REST
+                                REST API integration and Docker basics
                             </li>
                             <li className="flex items-start sm:col-span-2">
                                 <span className="text-fuchsia-400 mr-2">•</span>
-                                Trabajo en equipo con herramientas como Git
+                                Teamwork and version control with Git
                             </li>
                         </ul>
                     </div>
@@ -89,29 +91,27 @@ const AboutMe = () => {
                             rel="noopener noreferrer"
                             className="text-xs sm:text-sm text-fuchsia-300 hover:underline hover:text-fuchsia-200 transition-colors"
                         >
-                            ¿Quieres ver mi CV? Ábrelo aquí
+                            Want to see my CV? Open it here
                         </a>
                     </div>
                 </div>
             </div>
 
-            {/* Enlace destacado para FAQs */}
             <div className="mt-4 text-center lg:text-right">
                 <a
                     href="/faq"
                     className="text-xs sm:text-sm text-fuchsia-300 hover:underline hover:text-fuchsia-200 transition-colors"
                 >
-                    ¿Tienes dudas? Consulta las FAQs aquí
+                    Have questions? Check the FAQs here
                 </a>
             </div>
 
-            {/* Red de Referidos */}
             <div className="mt-5 sm:mt-6 md:mt-8">
                 <h3 className="text-base sm:text-lg md:text-xl font-semibold text-fuchsia-200 drop-shadow-neon mb-2 sm:mb-3 text-center lg:text-left">
-                    Mi Red de Contactos
+                    My Network
                 </h3>
                 <p className="text-indigo-200 mb-3 text-sm sm:text-base text-center lg:text-left">
-                    Te recomiendo conectar con estos colegas:
+                    Feel free to connect with these colleagues as well:
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center lg:justify-start">
                     <a
@@ -120,7 +120,7 @@ const AboutMe = () => {
                         rel="noopener noreferrer"
                         className="bg-fuchsia-800/60 hover:bg-fuchsia-600 text-white px-4 py-2.5 rounded-lg shadow-md transition-all duration-200 text-sm sm:text-base text-center flex-1 sm:flex-none min-w-[200px] hover:scale-105"
                     >
-                        Ing. Sebastian Araque – Frontend
+                        Eng. Sebastian Araque – Frontend
                     </a>
                     <a
                         href="https://juancastro6208.github.io/portafolio"
@@ -128,7 +128,7 @@ const AboutMe = () => {
                         rel="noopener noreferrer"
                         className="bg-fuchsia-800/60 hover:bg-fuchsia-600 text-white px-4 py-2.5 rounded-lg shadow-md transition-all duration-200 text-sm sm:text-base text-center flex-1 sm:flex-none min-w-[200px] hover:scale-105"
                     >
-                        Ing. Juan Castro – Backend
+                        Eng. Juan Castro – Backend
                     </a>
                 </div>
             </div>

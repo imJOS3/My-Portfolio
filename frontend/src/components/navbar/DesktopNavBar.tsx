@@ -1,4 +1,4 @@
-import { FaComments } from "react-icons/fa";
+import { FaComments, FaPalette } from "react-icons/fa";
 import ProfileImage from "../../assets/pfpPorfolioCartoonCut.png";
 import { useNavState } from "./useNavState";
 
@@ -41,12 +41,18 @@ const DesktopNavBar = () => {
         ))}
       </ul>
 
-      <div className="w-full flex flex-col items-center mt-auto mb-6">
+      <div className="w-full flex flex-col items-center mt-auto mb-6 gap-1">
+        <a
+          href="/theme"
+          className="flex w-full px-8 py-2 text-left font-bold transition-all duration-300 rounded-lg hover:scale-105 hover:text-[#05010f] hover:drop-shadow-[0_0_16px_#22d3ee] hover:bg-gradient-to-r hover:from-cyan-400 hover:to-fuchsia-500 text-[#a5b4fc] drop-shadow-[0_0_8px_#a855f7] items-center"
+        >
+          <FaPalette size={22} className="mr-2" /> Colors
+        </a>
         <a
           href="/open"
           className="flex w-full px-8 py-2 text-left font-bold transition-all duration-300 rounded-lg hover:scale-105 hover:text-[#05010f] hover:drop-shadow-[0_0_16px_#22d3ee] hover:bg-gradient-to-r hover:from-cyan-400 hover:to-fuchsia-500 text-[#a5b4fc] drop-shadow-[0_0_8px_#a855f7] items-center"
         >
-          <FaComments size={22} className="mr-2" /> Mis hobbies
+          <FaComments size={22} className="mr-2" /> My hobbies
         </a>
       </div>
     </nav>
