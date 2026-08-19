@@ -75,11 +75,17 @@ export const NavProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     window.sessionStorage.setItem(LAST_SECTION_STORAGE_KEY, activeSection);
   }, [activeSection]);
 
-  // Guardar y restaurar posición de scroll al recargar
+  // Guardar y restaurar posición de scroll al recargar (solo en el portafolio).
+  // Otras rutas (/theme, /open, etc.) deben empezar arriba, no heredar el scroll de Home.
   useEffect(() => {
     if ("scrollRestoration" in window.history) {
       window.history.scrollRestoration = "manual";
     }
+
+    const isPortfolioHome = () => {
+      const path = window.location.pathname.replace(/\/+$/, "") || "/";
+      return path === "/";
+    };
 
     const savedRaw = window.sessionStorage.getItem(SCROLL_Y_STORAGE_KEY);
     const savedY = savedRaw ? Number.parseInt(savedRaw, 10) : 0;
@@ -87,11 +93,12 @@ export const NavProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     let tries = 0;
 
     const saveScroll = () => {
+      if (!isPortfolioHome()) return;
       window.sessionStorage.setItem(SCROLL_Y_STORAGE_KEY, String(Math.round(window.scrollY)));
     };
 
     const restoreScroll = () => {
-      if (cancelled || !savedY || Number.isNaN(savedY) || savedY <= 0) return;
+      if (cancelled || !isPortfolioHome() || !savedY || Number.isNaN(savedY) || savedY <= 0) return;
 
       const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
       // Espera a que la página tenga altura suficiente (imágenes / lazy)
@@ -104,8 +111,11 @@ export const NavProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       window.scrollTo({ top: savedY, left: 0, behavior: "auto" });
     };
 
-    // Restaura en cuanto haya layout y refuerza mientras carga el contenido
-    restoreScroll();
+    if (isPortfolioHome()) {
+      restoreScroll();
+    } else {
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    }
     const t1 = window.setTimeout(restoreScroll, 100);
     const t2 = window.setTimeout(restoreScroll, 400);
     const t3 = window.setTimeout(restoreScroll, 1000);
@@ -213,15 +223,7 @@ export const NavProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setActiveSection(id);
     window.sessionStorage.setItem(LAST_SECTION_STORAGE_KEY, id);
 
-    // Centrar el contenido interno (no el top de la section min-h-screen)
-    const target = (el.firstElementChild as HTMLElement | null) ?? el;
-    const rect = target.getBoundingClientRect();
-    const contentCenter = window.scrollY + rect.top + rect.height / 2;
-    // Navbar fija en móvil: desplaza un poco el centro visual
-    const navCompensation = window.matchMedia("(max-width: 767px)").matches ? 32 : 0;
-    const top = Math.max(0, contentCenter - window.innerHeight / 2 - navCompensation);
-
-    window.scrollTo({ top, behavior: "smooth" });
+    el.scrollIntoView({ behavior: "smooth", block: "start" });
     setOpen(false);
   };
 

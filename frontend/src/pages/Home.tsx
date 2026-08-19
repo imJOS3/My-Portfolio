@@ -13,18 +13,10 @@ import Contact from "../components/sections/Contact";
 type AnimatedSectionProps = {
   id: string;
   animation: string;
-  className?: string;
-  innerClassName?: string;
   children: ReactNode;
 };
 
-function AnimatedSection({
-  id,
-  animation,
-  className = "",
-  innerClassName = "",
-  children,
-}: AnimatedSectionProps) {
+function AnimatedSection({ id, animation, children }: AnimatedSectionProps) {
   const ref = useRef<HTMLDivElement | null>(null);
   const [visible, setVisible] = useState(false);
 
@@ -34,7 +26,7 @@ function AnimatedSection({
 
     const observer = new IntersectionObserver(
       ([entry]) => setVisible(entry.isIntersecting),
-      { threshold: 0.3 }
+      { threshold: 0.28 }
     );
 
     observer.observe(el);
@@ -42,10 +34,13 @@ function AnimatedSection({
   }, []);
 
   return (
-    <section id={id} className={`scroll-mt-16 ${className}`}>
+    <section
+      id={id}
+      className="snap-section px-3 sm:px-5 md:px-8 max-lg:pb-[5.75rem]"
+    >
       <div
         ref={ref}
-        className={`section-animate ${animation}${visible ? " visible" : ""} ${innerClassName}`}
+        className={`section-animate ${animation}${visible ? " visible" : ""} h-full w-full max-w-7xl mx-auto`}
       >
         {children}
       </div>
@@ -54,6 +49,11 @@ function AnimatedSection({
 }
 
 export default function HomePage() {
+  useEffect(() => {
+    document.documentElement.classList.add("home-snap");
+    return () => document.documentElement.classList.remove("home-snap");
+  }, []);
+
   return (
     <div className="min-h-screen">
       <div className="hidden lg:block">
@@ -68,58 +68,28 @@ export default function HomePage() {
         <MobileNavBar />
       </div>
 
-      <div className="flex-grow min-h-screen lg:ml-60 md:max-lg:pt-16">
-        <AnimatedSection
-          id="home"
-          animation="fade-scale"
-          className="flex items-center justify-center px-4 md:px-8 min-h-dvh pt-16 md:pt-0"
-          innerClassName="w-full max-w-7xl mx-auto"
-        >
+      <div className="lg:ml-60">
+        <AnimatedSection id="home" animation="fade-scale">
           <Home />
         </AnimatedSection>
 
-        <AnimatedSection
-          id="projects"
-          animation="slide-right"
-          className="py-12 md:py-16 min-h-screen flex items-center justify-center"
-          innerClassName="w-full flex items-center justify-center"
-        >
+        <AnimatedSection id="projects" animation="slide-right">
           <Projects />
         </AnimatedSection>
 
-        <AnimatedSection
-          id="about"
-          animation="slide-up"
-          className="py-12 md:py-16 min-h-screen flex items-center justify-center"
-          innerClassName="w-full flex items-center justify-center"
-        >
+        <AnimatedSection id="about" animation="slide-up">
           <AboutMe />
         </AnimatedSection>
 
-        <AnimatedSection
-          id="skills"
-          animation="slide-left"
-          className="py-12 md:py-16 min-h-screen flex items-center justify-center"
-          innerClassName="w-full flex items-center justify-center"
-        >
+        <AnimatedSection id="skills" animation="slide-left">
           <Skills />
         </AnimatedSection>
 
-        <AnimatedSection
-          id="certificates"
-          animation="fade-rotate"
-          className="py-12 md:py-16 min-h-screen flex items-center justify-center"
-          innerClassName="w-full flex items-center justify-center"
-        >
+        <AnimatedSection id="certificates" animation="fade-rotate">
           <Certificates />
         </AnimatedSection>
 
-        <AnimatedSection
-          id="contact"
-          animation="slide-down"
-          className="py-12 md:py-16 min-h-screen flex items-center justify-center"
-          innerClassName="w-full flex items-center justify-center"
-        >
+        <AnimatedSection id="contact" animation="slide-down">
           <Contact />
         </AnimatedSection>
       </div>

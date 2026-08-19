@@ -75,10 +75,16 @@ const BEATS: ColorBeat[] = [
   },
 ];
 
+const HERO_TITLE = "The free look that makes this site unmistakable.";
+
 const ThemePage = () => {
   const [activeId, setActiveId] = useState(BEATS[0].id);
   const [progress, setProgress] = useState(0);
   const beatRefs = useRef<Record<string, HTMLElement | null>>({});
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }, []);
 
   useEffect(() => {
     const onScroll = () => {
@@ -114,9 +120,19 @@ const ThemePage = () => {
   }, []);
 
   const active = BEATS.find((b) => b.id === activeId) ?? BEATS[0];
+  const wash =
+    active.id === "gradient"
+      ? "radial-gradient(ellipse at 50% 42%, rgba(34,211,238,0.22), transparent 58%), radial-gradient(ellipse at 72% 68%, rgba(217,70,239,0.2), transparent 52%)"
+      : `radial-gradient(ellipse 80% 70% at 50% 40%, ${active.hex}40, transparent 62%)`;
 
   return (
     <div className="relative min-h-screen themed-text-primary">
+      <div
+        className="pointer-events-none fixed inset-0 z-0 transition-[background] duration-700"
+        style={{ background: wash }}
+        aria-hidden
+      />
+
       {/* Progress rail */}
       <div
         className="fixed top-0 left-0 right-0 z-50 h-1 origin-left"
@@ -135,7 +151,7 @@ const ThemePage = () => {
             <div key={beat.id} className="flex items-center justify-end gap-3">
               <span
                 className={`text-[10px] uppercase tracking-[0.2em] transition-opacity duration-300 ${
-                  isActive ? "opacity-100 themed-text-secondary" : "opacity-0"
+                  isActive ? "opacity-100 themed-text-label" : "opacity-0"
                 }`}
               >
                 {beat.name}
@@ -161,10 +177,10 @@ const ThemePage = () => {
       <section className="relative min-h-[100dvh] flex flex-col justify-center px-5 sm:px-8 lg:px-16 py-24 overflow-hidden">
         <Link
           to="/"
-          className="absolute top-5 sm:top-8 left-4 sm:left-8 z-20 flex items-center gap-2 text-cyan-300/90 hover:text-fuchsia-300 transition-colors group"
+          className="hobby-back-link fixed top-5 left-4 z-50 px-3 py-1.5 text-sm font-semibold sm:top-8 sm:left-8 sm:text-base hover:opacity-90"
         >
-          <FaArrowLeft className="size-4 sm:size-5 group-hover:-translate-x-0.5 transition-transform" />
-          <span className="font-semibold text-sm sm:text-base">Back to the portfolio</span>
+          <FaArrowLeft className="size-4 sm:size-5" />
+          <span>Back to the portfolio</span>
         </Link>
 
         <div
@@ -177,12 +193,15 @@ const ThemePage = () => {
         />
 
         <div className="relative z-10 max-w-4xl mx-auto text-center">
-          <p className="text-xs sm:text-sm uppercase tracking-[0.35em] themed-text-muted mb-6">
+          <p className="text-xs sm:text-sm uppercase tracking-[0.35em] themed-text-label mb-6">
             Visual system · Portfolio brand
           </p>
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.08] mb-6">
-            <span className="themed-accent-text drop-shadow-neon">
-              The free look that makes this site unmistakable.
+          <h1 className="relative text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.08] mb-6">
+            <span className="themed-headline-glow" aria-hidden>
+              {HERO_TITLE}
+            </span>
+            <span className="relative themed-headline">
+              {HERO_TITLE}
             </span>
           </h1>
           <p className="text-lg sm:text-xl md:text-2xl themed-text-secondary max-w-2xl mx-auto leading-relaxed mb-10">
@@ -196,7 +215,7 @@ const ThemePage = () => {
           </p>
           <a
             href="#void"
-            className="inline-flex flex-col items-center gap-2 themed-text-secondary hover:text-cyan-300 transition-colors"
+            className="inline-flex flex-col items-center gap-2 themed-text-label hover:text-fuchsia-300 transition-colors"
           >
             <span className="text-xs uppercase tracking-[0.25em]">Explore the palette</span>
             <FaArrowDown className="animate-bounce size-4" />
@@ -205,7 +224,7 @@ const ThemePage = () => {
       </section>
 
       {/* Pitch strip — 1.1.1.1 style triad */}
-      <section className="px-5 sm:px-8 lg:px-16 py-20 sm:py-28 border-y border-cyan-500/15 bg-black/30 backdrop-blur-sm">
+      <section className="relative px-5 sm:px-8 lg:px-16 py-20 sm:py-28">
         <div className="max-w-5xl mx-auto grid gap-12 md:grid-cols-3 text-center md:text-left">
           {[
             {
@@ -243,21 +262,9 @@ const ThemePage = () => {
           }}
           className="relative min-h-[100dvh] flex items-center px-5 sm:px-8 lg:px-16 py-24 sm:py-32"
         >
-          <div
-            className="absolute inset-0 transition-opacity duration-700"
-            style={{
-              opacity: activeId === beat.id ? 1 : 0.35,
-              background:
-                beat.id === "gradient"
-                  ? "radial-gradient(ellipse at 50% 40%, rgba(34,211,238,0.22), transparent 55%), radial-gradient(ellipse at 70% 70%, rgba(217,70,239,0.25), transparent 50%)"
-                  : `radial-gradient(ellipse at 30% 40%, ${beat.hex}55, transparent 55%)`,
-            }}
-            aria-hidden
-          />
-
           <div className="relative z-10 max-w-6xl mx-auto w-full grid lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] gap-12 lg:gap-20 items-center">
             <div>
-              <p className="text-xs uppercase tracking-[0.3em] themed-text-muted mb-3">
+              <p className="text-xs uppercase tracking-[0.3em] themed-text-label mb-3">
                 {String(index + 1).padStart(2, "0")} · {beat.role}
               </p>
               <p
@@ -302,7 +309,7 @@ const ThemePage = () => {
                   </p>
                 </div>
               </div>
-              <p className="text-xs themed-text-muted uppercase tracking-[0.2em] text-center lg:text-right">
+              <p className="text-xs themed-text-label uppercase tracking-[0.2em] text-center lg:text-right">
                 Active: {active.name}
               </p>
             </div>
@@ -311,7 +318,7 @@ const ThemePage = () => {
       ))}
 
       {/* How it works together */}
-      <section className="px-5 sm:px-8 lg:px-16 py-24 sm:py-32 bg-black/40 border-y border-fuchsia-500/15">
+      <section className="relative px-5 sm:px-8 lg:px-16 py-24 sm:py-32">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold themed-accent-text mb-6">
             Night by default. Day when you need light.
@@ -340,7 +347,7 @@ const ThemePage = () => {
           aria-hidden
         />
         <div className="relative z-10 max-w-3xl mx-auto">
-          <p className="text-xs uppercase tracking-[0.35em] themed-text-muted mb-6">
+          <p className="text-xs uppercase tracking-[0.35em] themed-text-label mb-6">
             End of the tour
           </p>
           <h2 className="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight mb-8">
@@ -364,7 +371,7 @@ const ThemePage = () => {
               Return to the homepage
             </Link>
             <Link
-              to="/contactme"
+              to="/#contact"
               className="px-8 py-3 rounded-xl font-bold text-base border border-cyan-400/40 themed-text-secondary hover:border-fuchsia-400/60 hover:text-fuchsia-200 transition-colors"
             >
               Say hello

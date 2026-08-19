@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
-import { FaArrowDown } from "react-icons/fa";
+import { useNavState } from "../navbar/useNavState";
+
+const STACK = ["Node.js", "Java", "Spring Boot", "React", "PostgreSQL", "Docker"];
 
 const Home = () => {
+  const { scrollTo } = useNavState();
   const [text1, setText1] = useState("");
   const [text2, setText2] = useState("");
   const [text3, setText3] = useState("");
@@ -42,80 +45,114 @@ const Home = () => {
                   if (index3 === fullText3.length) {
                     clearInterval(typing3);
                     setShowCursor3(false);
-                    setTimeout(() => setShowBelow(true), 300);
+                    setTimeout(() => setShowBelow(true), 280);
                   }
-                }, 100);
-              }, 400);
+                }, 90);
+              }, 320);
             }
-          }, 100);
-        }, 400);
+          }, 90);
+        }, 320);
       }
-    }, 100);
+    }, 90);
 
     return () => clearInterval(typing1);
   }, []);
 
-  const scrollToProjects = () => {
-    document.getElementById("projects")?.scrollIntoView({ behavior: "smooth" });
-  };
-
   return (
-    <div
-      className="
-      w-full min-h-[calc(100dvh-6rem)] md:min-h-[calc(100dvh-2rem)]
-      flex flex-col items-center justify-center
-      py-6 gap-8 md:gap-12"
-    >
-      <div className="relative">
-        <span className="absolute -inset-1 rounded-2xl bg-gradient-to-tr from-cyan-400 via-purple-600 to-fuchsia-500 blur-xl opacity-30"></span>
+    <div className="relative flex h-full w-full min-h-0 items-center overflow-visible">
+      <div className="section-orb -left-16 top-10 h-48 w-48 bg-[var(--accent-cyan)]" />
+      <div className="section-orb right-4 bottom-8 h-56 w-56 bg-[var(--accent-fuchsia)] hidden md:block" />
 
-        <div className="relative bg-[#05010f]/70 backdrop-blur-md rounded-xl p-10 shadow-2xl border border-cyan-500/20">
-          <span className="block text-5xl leading-[1.3] pb-2 font-extrabold bg-gradient-to-r from-cyan-300 to-fuchsia-400 bg-clip-text text-transparent drop-shadow-[0_0_16px_#22d3ee] mb-2">
-            {text1}
-            {showCursor1 && <span className="text-cyan-300 animate-pulse">|</span>}
-          </span>
-          <span className="block text-5xl leading-[1.3] pb-2 font-extrabold bg-gradient-to-r from-cyan-300 to-fuchsia-400 bg-clip-text text-transparent drop-shadow-[0_0_16px_#a855f7] mb-2">
-            {text2}
-            {showCursor2 && <span className="text-cyan-300 animate-pulse">|</span>}
-          </span>
-          <p className="text-xl text-[#a5b4fc] mb-8 font-medium">
-            {text3}
-            {showCursor3 && <span className="text-cyan-300 animate-pulse">|</span>}
-          </p>
-        </div>
-      </div>
+      <div className="relative grid w-full items-center gap-6 lg:grid-cols-[1.15fr_0.85fr] lg:gap-10">
+        <div>
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full themed-surface px-3 py-1">
+            <span className="status-live h-2 w-2 rounded-full bg-[var(--accent-cyan)]" />
+            <span className="section-kicker !tracking-[0.16em]">Open to internships</span>
+          </div>
 
-      <div
-        className={`w-full max-w-2xl px-4 text-center transition-all duration-700 ease-out ${
-          showBelow
-            ? "opacity-100 translate-y-0"
-            : "opacity-0 translate-y-4 pointer-events-none"
-        }`}
-      >
-        <p className="text-indigo-200/90 text-sm sm:text-base mb-5 leading-relaxed">
-          Fullstack developer focused on backend and real-world systems
-        </p>
+          <p className="section-kicker mb-2">01 — Home</p>
 
-        <div className="flex flex-wrap justify-center gap-2 mb-8">
-          {["Node.js", "Java", "Spring Boot", "React", "PostgreSQL", "Docker"].map((tech) => (
-            <span
-              key={tech}
-              className="text-xs sm:text-sm px-3 py-1.5 rounded-lg border border-cyan-400/25 bg-[#05010f]/50 text-cyan-100/90"
-            >
-              {tech}
+          <h1 className="font-extrabold text-[clamp(1.85rem,5vw,3.4rem)]">
+            <span className="themed-accent-text block leading-[1.35] pb-1">
+              {text1}
+              {showCursor1 && <span className="typing-caret" />}
             </span>
-          ))}
+            <span className="themed-accent-text block leading-[1.35] pb-1">
+              {text2}
+              {showCursor2 && <span className="typing-caret" />}
+            </span>
+          </h1>
+
+          <p className="mt-1 overflow-visible py-1 text-[clamp(0.95rem,2.2vw,1.25rem)] font-medium leading-normal themed-text-secondary">
+            {text3}
+            {showCursor3 && <span className="typing-caret" />}
+          </p>
+
+          <div
+            className={`mt-5 transition-all duration-700 ${
+              showBelow ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-3 opacity-0"
+            }`}
+          >
+            <p className="max-w-xl text-sm themed-text-muted sm:text-base">
+              Fullstack developer focused on backend and real-world systems.
+            </p>
+
+            <div className="mt-4 flex flex-wrap gap-2">
+              {STACK.map((tech) => (
+                <span
+                  key={tech}
+                  className="themed-pill rounded-lg border px-2.5 py-1 text-[11px] sm:text-xs"
+                >
+                  {tech}
+                </span>
+              ))}
+            </div>
+
+            <div className="mt-6 flex flex-wrap gap-3">
+              <button
+                type="button"
+                onClick={() => scrollTo("projects")}
+                className="themed-btn-gradient rounded-xl px-5 py-2.5 text-sm font-semibold shadow-lg transition hover:opacity-90"
+              >
+                View projects
+              </button>
+              <button
+                type="button"
+                onClick={() => scrollTo("contact")}
+                className="themed-surface rounded-xl px-5 py-2.5 text-sm font-semibold themed-text-primary transition hover:border-[var(--surface-border-hover)]"
+              >
+                Contact me
+              </button>
+            </div>
+          </div>
         </div>
 
-        <button
-          type="button"
-          onClick={scrollToProjects}
-          className="inline-flex flex-col items-center gap-1 text-fuchsia-300/80 hover:text-fuchsia-200 transition-colors"
-          aria-label="Go to projects"
-        >
-          <span className="text-xs tracking-widest uppercase">Scroll</span>
-          <FaArrowDown className="animate-bounce" />
-        </button>
+        <aside className="home-terminal hidden lg:block">
+          <div className="home-terminal-bar">
+            <span className="home-terminal-dot bg-rose-400" />
+            <span className="home-terminal-dot bg-amber-300" />
+            <span className="home-terminal-dot bg-emerald-400" />
+            <span className="ml-2 text-[11px] themed-text-muted">jose@portfolio:~</span>
+          </div>
+          <div className="space-y-2 p-5 font-mono text-[13px] leading-relaxed themed-text-secondary">
+            <div>
+              <span className="themed-text-label">$ </span>whoami
+            </div>
+            <div className="themed-text-primary">jose-benjumea</div>
+            <div>
+              <span className="themed-text-label">$ </span>cat focus.txt
+            </div>
+            <div className="themed-text-primary">backend · apis · fullstack products</div>
+            <div>
+              <span className="themed-text-label">$ </span>status --now
+            </div>
+            <div className="themed-glow-text">open_to_internships ✓</div>
+            <div>
+              <span className="themed-text-label">$ </span>
+              <span className="typing-caret" />
+            </div>
+          </div>
+        </aside>
       </div>
     </div>
   );

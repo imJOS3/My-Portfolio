@@ -1,176 +1,165 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { ArrowLeft } from "lucide-react";
-import BackendUnavailable from "../components/BackendUnavailable";
-import { BACKEND_AVAILABLE } from "../config/backend";
+import { Link } from "react-router-dom";
+import { FaBookOpen, FaFutbol, FaGamepad, FaHeadphones } from "react-icons/fa";
+import { HOBBIES, groupTitles, type HobbyCategory, type HobbyIconId } from "../data/hobbies";
+import { useLockViewport } from "../hooks/useLockViewport";
 
-const baseUrl = import.meta.env.VITE_URL_BASE_BACKEND;
+const ICONS: Record<HobbyIconId, typeof FaGamepad> = {
+  games: FaGamepad,
+  anime: FaBookOpen,
+  sports: FaFutbol,
+  music: FaHeadphones,
+};
 
-interface FavoriteItem {
-  image: string;
-  title: string;
-  type: string;
-  summary: string;
-  description: string;
-  keywords: string[];
-  year?: number;
-  link?: string;
-}
-
-const OpenFavorites = () => {
-  const [favoriteItems, setFavoriteItems] = useState<FavoriteItem[]>([]);
-  const [loading, setLoading] = useState(BACKEND_AVAILABLE);
-  const [error, setError] = useState("");
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!BACKEND_AVAILABLE) return;
-
-    const fetchFavorites = async () => {
-      setLoading(true);
-      setError("");
-      try {
-        const res = await fetch(`${baseUrl}/api/favorite-items/?limit=9999`);
-        if (!res.ok) throw new Error("Failed to load favorites");
-        const data = await res.json();
-
-        const items = Array.isArray(data)
-          ? data
-          : Array.isArray(data.results)
-          ? data.results
-          : [];
-
-        const mappedItems: FavoriteItem[] = items.map((item: any) => ({
-          image:
-            item.imagen &&
-            (item.imagen.startsWith("http")
-              ? item.imagen
-              : `${baseUrl}${item.imagen}`),
-          title: item.titulo,
-          type: item.tipo
-            ? item.tipo.charAt(0).toUpperCase() + item.tipo.slice(1)
-            : "Other",
-          summary: item.resumen,
-          description: item.descripcion,
-          keywords: item.palabras_clave
-            ? item.palabras_clave.split(",").map((k: string) => k.trim())
-            : [],
-          year: item.año_lanzamiento,
-          link: item.link_externo,
-        }));
-
-        setFavoriteItems(mappedItems);
-      } catch {
-        setError("Could not load favorites.");
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchFavorites();
-  }, []);
+const OpenHobbies = () => {
+  useLockViewport();
 
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-start bg-gradient-to-br from-gray-900 via-indigo-900 to-fuchsia-700 py-6 overflow-y-auto">
-      <button
-        onClick={() => navigate(-1)}
-        className="absolute top-4 left-4 flex items-center gap-2 px-3 py-2 bg-black/40 hover:bg-black/70 text-fuchsia-300 rounded-full shadow-lg transition-all duration-200"
-      >
-        <ArrowLeft size={20} />
-        <span className="text-sm font-semibold">Back</span>
-      </button>
+    <section className="relative h-dvh overflow-hidden themed-text-primary flex flex-col px-3 sm:px-5 lg:px-8 py-3 sm:py-4">
+      <div
+        className="pointer-events-none absolute inset-0 opacity-40"
+        style={{
+          background:
+            "radial-gradient(ellipse at 18% 12%, rgba(34,211,238,0.32), transparent 48%), radial-gradient(ellipse at 88% 8%, rgba(168,85,247,0.38), transparent 42%), radial-gradient(ellipse at 50% 100%, rgba(217,70,239,0.28), transparent 52%)",
+        }}
+        aria-hidden
+      />
 
-      <h1 className="text-3xl font-bold text-fuchsia-300 mb-6 drop-shadow-neon text-center">
-        My favorite series, games & anime
-      </h1>
+      <div className="relative z-10 flex h-full min-h-0 flex-col mx-auto w-full max-w-6xl">
+        <header className="flex shrink-0 items-center justify-between gap-3 mb-3 sm:mb-4">
+          <Link
+            to="/"
+            className="hobby-back-link text-xs sm:text-sm font-semibold hover:opacity-80 transition-opacity group"
+          >
+            <span className="font-semibold text-xs sm:text-sm">← Back</span>
+          </Link>
+          <div className="text-center min-w-0">
+            <p className="hidden sm:block text-[10px] uppercase tracking-[0.32em] themed-text-muted mb-0.5">
+              Off the clock · Still me
+            </p>
+            <h1 className="text-xl sm:text-2xl md:text-3xl font-extrabold leading-none themed-text-primary">
+              My hobbies
+            </h1>
+          </div>
+          <span className="w-12 sm:w-14" aria-hidden />
+        </header>
 
-      {!BACKEND_AVAILABLE ? (
-        <div className="w-full max-w-md px-4 mt-8">
-          <BackendUnavailable />
+        <div className="grid min-h-0 flex-1 grid-cols-2 grid-rows-2 gap-2 sm:gap-3 md:gap-4">
+          {HOBBIES.map((hobby, index) => (
+            <HobbyCard key={hobby.id} hobby={hobby} index={index} />
+          ))}
         </div>
-      ) : loading ? (
-        <div className="text-fuchsia-300 text-center py-8 animate-pulse">
-          Loading favorites...
-        </div>
-      ) : error ? (
-        <div className="text-red-400 font-semibold mb-4 text-center">
-          {error}
-        </div>
-      ) : (
-        <div className="grid grid-cols-2 md:grid-cols-4 auto-rows-[220px] gap-2 w-full max-w-6xl px-2">
-          {favoriteItems.map((item, idx) => {
-            let cardClass = "col-span-1 row-span-1";
-            if (idx % 8 === 0) cardClass = "col-span-2 row-span-2";
-            else if (idx % 6 === 0) cardClass = "col-span-2 row-span-1";
-            else if (idx % 4 === 0) cardClass = "col-span-1 row-span-2";
-            return <PosterCard key={idx} item={item} className={cardClass} />;
-          })}
-        </div>
-      )}
+      </div>
     </section>
   );
 };
 
-function PosterCard({
-  item,
-  className,
-}: {
-  item: FavoriteItem;
-  className: string;
-}) {
+function HobbyCard({ hobby, index }: { hobby: HobbyCategory; index: number }) {
+  const Icon = ICONS[hobby.icon];
+  const groups = groupTitles(hobby);
+  const splitGroups = groups.length > 1;
+
+  const skin = {
+    games: {
+      wrap: "rounded-2xl border-cyan-400/35",
+      iconWrap: "rounded-xl themed-btn-gradient",
+      cta: "Open vault →",
+    },
+    anime: {
+      wrap: "rounded-2xl border-fuchsia-400/40",
+      iconWrap: "rounded-xl themed-btn-gradient",
+      cta: "Open signal →",
+    },
+    sports: {
+      wrap: "rounded-2xl border-cyan-400/35",
+      iconWrap: "rounded-xl themed-btn-gradient",
+      cta: "Open HUD →",
+    },
+    music: {
+      wrap: "rounded-[1.75rem] border-purple-400/40",
+      iconWrap: "rounded-full themed-btn-gradient",
+      cta: "Now playing →",
+    },
+  }[hobby.id] ?? {
+    wrap: "rounded-2xl",
+    iconWrap: "rounded-xl themed-btn-gradient",
+    cta: "Open archive →",
+  };
+
   return (
-    <div
-      className={`relative rounded-2xl overflow-hidden shadow-xl border-2 ${
-        item.type === "Anime"
-          ? "border-fuchsia-400/60"
-          : "border-indigo-400/60"
-      } group bg-gradient-to-br from-black/80 via-fuchsia-900/30 to-indigo-900/30 ${className}`}
+    <Link
+      to={`/open/${hobby.id}`}
+      className={`group relative flex min-h-0 h-full flex-col themed-surface backdrop-blur-md p-3 sm:p-4 md:p-5 overflow-hidden shadow-xl hover:border-[var(--surface-border-hover)] animate-fade-in ${skin.wrap}`}
+      style={{ animationDelay: `${index * 70}ms`, animationFillMode: "backwards" }}
     >
-      <img
-        src={item.image}
-        alt={item.title}
-        className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 group-hover:blur-sm"
+      <div
+        className="pointer-events-none absolute -top-12 -right-8 h-28 w-28 rounded-full blur-3xl opacity-50 group-hover:opacity-80"
+        style={{ background: hobby.glow }}
+        aria-hidden
+      />
+      <Icon
+        className="pointer-events-none absolute -bottom-4 -right-3 size-20 sm:size-24 opacity-[0.07] group-hover:opacity-[0.12]"
+        aria-hidden
       />
 
-      <div
-        className={`absolute inset-0 ${
-          item.type === "Anime"
-            ? "bg-gradient-to-br from-fuchsia-900/80 via-black/80 to-indigo-900/80"
-            : "bg-gradient-to-br from-indigo-900/80 via-black/80 to-fuchsia-900/80"
-        } opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-center items-center p-3 text-center rounded-2xl`}
-      >
-        <h2 className="text-lg font-extrabold text-fuchsia-200 mb-1 drop-shadow-lg">
-          {item.title}
-        </h2>
-        <span className="text-xs text-fuchsia-400 mb-1 font-semibold uppercase tracking-wide">
-          {item.type} • {item.year}
+      <div className="relative flex items-center gap-2.5 sm:gap-3 mb-1.5 sm:mb-2 shrink-0">
+        <span
+          className={`flex size-8 sm:size-10 shrink-0 items-center justify-center ${skin.iconWrap}`}
+          style={{ boxShadow: `0 0 18px ${hobby.glow}` }}
+        >
+          <Icon className="size-3.5 sm:size-4" />
         </span>
-        <p className="text-indigo-100 mb-1 font-medium italic text-xs">
-          {item.summary}
-        </p>
-        <p className="text-indigo-200 text-xs mb-2">{item.description}</p>
-        <div className="mb-2 flex flex-wrap justify-center">
-          {(item.keywords ?? []).map((kw: string, i: number) => (
-            <span
-              key={i}
-              className="inline-block bg-fuchsia-700/40 text-fuchsia-100 px-2 py-1 rounded-full text-xs mr-1 mb-1 shadow-md"
-            >
-              {kw}
-            </span>
-          ))}
+        <div className="min-w-0">
+          <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.24em] themed-text-muted leading-none mb-0.5">
+            {hobby.kicker}
+          </p>
+          <h2 className="text-sm sm:text-lg md:text-xl font-extrabold themed-text-primary leading-tight truncate">
+            {hobby.title}
+          </h2>
         </div>
-        {item.link && (
-          <a
-            href={item.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block px-2 py-1 bg-fuchsia-500 hover:bg-fuchsia-700 text-white font-bold rounded-lg shadow-lg transition-all duration-200 text-xs"
-          >
-            View details
-          </a>
-        )}
       </div>
-    </div>
+
+      <p className="relative themed-text-secondary text-[11px] sm:text-xs md:text-sm leading-snug mb-2 sm:mb-3 line-clamp-2">
+        {hobby.description}
+      </p>
+
+      <div
+        className={`relative min-h-0 flex-1 ${
+          groups.length >= 3
+            ? "grid grid-cols-3 gap-1.5 sm:gap-2"
+            : splitGroups
+              ? "grid grid-cols-2 gap-2 sm:gap-3"
+              : "flex flex-col"
+        }`}
+      >
+        {groups.map((group) => (
+          <div key={group.label} className="min-h-0">
+            <p className="text-[9px] sm:text-[10px] font-semibold uppercase tracking-[0.18em] themed-text-muted mb-1.5">
+              {group.label}
+            </p>
+            <ul className="flex flex-wrap gap-1 sm:gap-1.5">
+              {group.items.slice(0, groups.length >= 3 ? 2 : 3).map((name) => (
+                <li
+                  key={name}
+                  className="themed-pill border rounded-full px-2 sm:px-2.5 py-0.5 text-[10px] sm:text-xs font-medium"
+                >
+                  {name}
+                </li>
+              ))}
+              {group.items.length > (groups.length >= 3 ? 2 : 3) && (
+                <li className="themed-pill border rounded-full px-2 py-0.5 text-[10px] sm:text-xs font-medium themed-text-muted">
+                  +{group.items.length - (groups.length >= 3 ? 2 : 3)}
+                </li>
+              )}
+            </ul>
+          </div>
+        ))}
+      </div>
+
+      <p className="relative mt-2 text-[10px] sm:text-xs uppercase tracking-[0.2em] themed-glow-text">
+        {skin.cta}
+      </p>
+    </Link>
   );
 }
 
-export default OpenFavorites;
+export default OpenHobbies;
