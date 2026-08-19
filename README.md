@@ -1,8 +1,8 @@
 # Portfolio — Jose Benjumea
 
-Personal full-stack portfolio: a cyberpunk React site plus a Django REST API.
+Personal cyberpunk portfolio: a React SPA with snap-scroll home, hobbies, color theory, and recruiter FAQs.
 
-- **Live site:** [josebenjumea.site](https://josebenjumea.site)
+- **Live site:** [josebenjumea.dev](https://josebenjumea.dev)
 - **Repo:** [imJOS3/My-Portfolio](https://github.com/imJOS3/My-Portfolio)
 - **Author:** Jose Benjumea ([`imJOS3`](https://github.com/imJOS3))
 - **Location:** Bogotá, Colombia (born and raised in Barranquilla)
@@ -16,7 +16,7 @@ The UI is in **English**. This README is in English so GitHub visitors and recru
 
 A one-page snap-scroll portfolio with extra routes for hobbies, color theory, and FAQs. The homepage is built so each section fills the viewport (`100dvh`) and snaps into place — content is meant to fit without scrolling inside a section.
 
-The public site currently runs **frontend-first**: projects, skills, certificates, hobbies, and FAQs are static data in React. The Django API still exists for CMS-style content; it is toggled off in the client until the backend is back online.
+The public site is **frontend-only**. Projects, skills, certificates, hobbies, and FAQs are static data in React. Contact is email or WhatsApp from the homepage — no API required.
 
 ---
 
@@ -33,13 +33,12 @@ The public site currently runs **frontend-first**: projects, skills, certificate
 | **Theme** | Night / day cyberpunk tokens via CSS variables (`data-theme`) |
 | **Colors** | `/theme` explains the palette (void, cyan, purple, fuchsia, gradient) |
 | **Hobbies** | `/open` archive: games, anime, sports, music — each with its own layout |
+| **FAQs** | `/faq` recruiter checklist: age, availability, languages, stack, contact |
 | **Analytics** | Google Tag Manager (`GTM-NP9PSDH5`), including `contact_button_click` |
 
 ---
 
 ## Tech stack
-
-### Frontend (`frontend/`)
 
 | | |
 |---|---|
@@ -51,18 +50,6 @@ The public site currently runs **frontend-first**: projects, skills, certificate
 
 Dev server: **port 5171** (`vite.config.ts`, `host: true`).
 
-### Backend (`backend/`)
-
-| | |
-|---|---|
-| API | Django 5.2, Django REST Framework |
-| CORS | `django-cors-headers` (localhost + `josebenjumea.site`) |
-| DB | SQLite locally; PostgreSQL on Render when `RENDER` is set |
-| Static | WhiteNoise |
-| Server | Gunicorn |
-| Hosting | Render (`backend/render.yaml`) |
-| Runtime | Python 3.12 (`runtime.txt`) |
-
 ---
 
 ## Repo layout
@@ -70,24 +57,20 @@ Dev server: **port 5171** (`vite.config.ts`, `host: true`).
 ```
 portfolio/
 ├── README.md
-├── frontend/                 # Vite + React app
-│   ├── src/
-│   │   ├── App.tsx           # Routes
-│   │   ├── index.css         # Themes, snap scroll, surfaces
-│   │   ├── context/          # Night / day theme
-│   │   ├── data/hobbies.ts   # Hobby catalog
-│   │   ├── components/
-│   │   │   ├── navbar/       # Mobile / tablet / desktop
-│   │   │   └── sections/     # Home, Projects, About, Skills, Certificates, Contact
-│   │   ├── pages/            # Home, FAQs, hobbies, theme, 404
-│   │   └── assets/           # Photos, project shots, certificates, CV
-│   └── vercel.json
-└── backend/                  # Django project
-    ├── manage.py
-    ├── requirements.txt
-    ├── render.yaml
-    ├── content/              # App: models, views, serializers, URLs
-    └── backend/              # settings, urls, wsgi/asgi
+└── frontend/                 # Vite + React app
+    ├── src/
+    │   ├── App.tsx           # Routes
+    │   ├── index.css         # Themes, snap scroll, surfaces
+    │   ├── context/          # Night / day theme
+    │   ├── data/
+    │   │   ├── faqs.ts       # Recruiter FAQs
+    │   │   └── hobbies.ts    # Hobby catalog
+    │   ├── components/
+    │   │   ├── navbar/       # Mobile / tablet / desktop
+    │   │   └── sections/     # Home, Projects, About, Skills, Certificates, Contact
+    │   ├── pages/            # Home, FAQs, hobbies, theme, 404
+    │   └── assets/           # Photos, project shots, certificates, CV
+    └── vercel.json
 ```
 
 ---
@@ -144,7 +127,7 @@ Main contact on the homepage is **email** (`mailto:josebenjuema2005@gmail.com`) 
 
 Static catalog in `frontend/src/data/hobbies.ts`:
 
-- **Games** — mobile, PC, Geometry Dash
+- **Games** — mobile (Clash Royale, Free Fire), PC (Space Marine 2, Limbo, Little Nightmares, Hollow Knight, Left 4 Dead), Geometry Dash
 - **Anime** — shelf layout
 - **Sports** — football (Junior de Barranquilla, Tottenham, Dortmund, and more)
 - **Music** — deck / now-playing style
@@ -156,10 +139,6 @@ Static catalog in `frontend/src/data/hobbies.ts`:
 ### Requirements
 
 - Node.js 18+ and npm
-- Python 3.11+ (3.12 used in production)
-- Optional: PostgreSQL if you deploy the API on Render
-
-### Frontend
 
 ```bash
 cd frontend
@@ -176,81 +155,17 @@ Open [http://localhost:5171](http://localhost:5171).
 | `npm run preview` | Preview the build |
 | `npm run lint` | ESLint |
 
-### Backend
-
-```bash
-cd backend
-python -m venv .venv
-
-# Windows
-.venv\Scripts\activate
-
-# macOS / Linux
-source .venv/bin/activate
-
-pip install -r requirements.txt
-python manage.py migrate
-python manage.py createsuperuser
-python manage.py runserver
-```
-
-- API: [http://127.0.0.1:8000/api/](http://127.0.0.1:8000/api/)
-- Admin: [http://127.0.0.1:8000/admin/](http://127.0.0.1:8000/admin/)
-
-Copy `backend/.env.example` to `backend/.env` for local secrets:
-
-```env
-SECRET_KEY=cambia-esta-clave-en-produccion
-DEBUG=True
-```
-
----
-
-## API (Django + DRF)
-
-Base: `/api/`  
-Pagination: 10 items per page.
-
-| Resource | Method | Path |
-|----------|--------|------|
-| FAQs | `GET` | `/api/faqs/` |
-| Favorites | `GET` | `/api/favorites/` |
-| Contact messages | `POST` | `/api/contact-messages/` |
-| Certificates | `GET` | `/api/certificates/` |
-| Projects | `GET` | `/api/projects/` |
-
-ViewSets are full ModelViewSets (list/create/retrieve/update/destroy). Certificates use `IsAuthenticatedOrReadOnly`.
-
-**Models (app `content`):** `FAQ`, `FavoriteItem`, `ContactMessage`, `Certificate`, `Project`.
-
 ---
 
 ## Deployment
 
-### Frontend — Vercel
+Frontend on **Vercel**. Root directory: `frontend`. `vercel.json` rewrites all paths to `index.html` so React Router works on refresh.
 
-Root directory: `frontend`. `vercel.json` rewrites all paths to `index.html` so React Router works on refresh.
+---
 
-### Backend — Render
+## Roadmap
 
-`backend/render.yaml` defines a Python web service:
-
-- Install deps, migrate, collectstatic, optional auto superuser
-- Start: `gunicorn backend.wsgi:application`
-
-| Variable | Role |
-|----------|------|
-| `SECRET_KEY` | Django secret |
-| `DEBUG` | `True` / `False` |
-| `RENDER` | If set, use PostgreSQL |
-| `DB_NAME`, `DB_USER`, `DB_PASSWORD`, `DB_HOST`, `DB_PORT` | Postgres |
-| `CREATE_SUPERUSER` | `True` to create admin on deploy |
-| `DJANGO_SUPERUSER_USERNAME` | Admin user |
-| `DJANGO_SUPERUSER_EMAIL` | Admin email |
-| `DJANGO_SUPERUSER_PASSWORD` | Admin password |
-| `DJANGO_SETTINGS_MODULE` | `backend.settings` |
-
-CORS already allows `https://josebenjumea.site`. If you add another frontend origin, update `CORS_ALLOWED_ORIGINS` in `backend/backend/settings.py`.
+- **UTM campaign tracking — pending.** GTM is already on the site (`GTM-NP9PSDH5`) and contact CTAs push `contact_button_click`, but campaign parameters (`utm_source`, `utm_medium`, `utm_campaign`, `utm_content`, `utm_term`) are not captured, stored, or sent with events yet. This is required before outbound or paid campaigns so sessions and conversions can be attributed in Analytics.
 
 ---
 

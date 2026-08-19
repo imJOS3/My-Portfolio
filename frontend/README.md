@@ -1,6 +1,6 @@
 # Frontend
 
-React + Vite + TypeScript app for [Jose Benjumea’s portfolio](https://josebenjumea.site).
+React + Vite + TypeScript app for [Jose Benjumea’s portfolio](https://josebenjumea.dev).
 
 Full setup, routes, theme, and API notes live in the **[root README](../README.md)**.
 
