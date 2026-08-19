@@ -2,7 +2,7 @@
 
 Portfolio personal full-stack: frontend en React + backend en Django REST Framework.
 
-- **Sitio:** [josebenjumea.site](https://josebenjumea.site)
+- **Sitio:** [josebenjumea.dev](https://josebenjumea.dev)
 - **Autor:** Jose Benjumea (`imJOS3`)
 
 ## Estructura
