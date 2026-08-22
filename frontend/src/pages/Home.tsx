@@ -25,8 +25,10 @@ function AnimatedSection({ id, animation, children }: AnimatedSectionProps) {
     if (!el) return;
 
     const observer = new IntersectionObserver(
-      ([entry]) => setVisible(entry.isIntersecting),
-      { threshold: 0.28 }
+      ([entry]) => {
+        if (entry.isIntersecting) setVisible(true);
+      },
+      { threshold: 0.12 }
     );
 
     observer.observe(el);
@@ -36,7 +38,7 @@ function AnimatedSection({ id, animation, children }: AnimatedSectionProps) {
   return (
     <section
       id={id}
-      className="snap-section px-3 sm:px-5 md:px-8 max-lg:pb-[5.75rem]"
+      className="snap-section px-3 py-8 sm:px-5 sm:py-10 md:px-8 md:pt-8 lg:py-0 max-md:pb-32"
     >
       <div
         ref={ref}
@@ -64,11 +66,11 @@ export default function HomePage() {
         <TabletNavBar />
       </div>
 
-      <div className="flex md:hidden fixed top-0 left-0 right-0 z-50">
+      <div className="md:hidden">
         <MobileNavBar />
       </div>
 
-      <div className="lg:ml-60">
+      <div className="md:pt-[4.25rem] lg:ml-60 lg:pt-0">
         <AnimatedSection id="home" animation="fade-scale">
           <Home />
         </AnimatedSection>

@@ -58,7 +58,7 @@ const certificates: Certificate[] = [
 
 const Certificates = () => {
     return (
-        <div className="flex h-full w-full min-h-0 flex-col justify-center gap-4 pt-5 sm:pt-8">
+        <div className="flex h-full w-full min-h-0 flex-col justify-center gap-3 py-6 sm:gap-4 sm:pt-8">
             <div>
                 <p className="section-kicker">05 — Proof</p>
                 <h2 className="themed-accent-text text-[clamp(1.35rem,3vw,2.1rem)] font-extrabold leading-tight">
@@ -82,11 +82,12 @@ const Certificates = () => {
                                 {cert.icon}
                             </span>
                             <span className="min-w-0 flex-1">
-                                <span className="block truncate font-semibold themed-text-primary sm:text-lg">
+                                <span className="block font-semibold leading-snug themed-text-primary sm:truncate sm:text-lg">
                                     {cert.title}
                                 </span>
                                 <span className="text-xs themed-text-muted sm:text-sm">
                                     {cert.issuer}
+                                    <span className="sm:hidden"> · {cert.date}</span>
                                 </span>
                             </span>
                             <span className="hidden shrink-0 text-sm themed-text-secondary sm:block">

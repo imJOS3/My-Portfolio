@@ -6,7 +6,7 @@ const DesktopNavBar = () => {
   const { activeSection, scrollTo, sections } = useNavState();
 
   return (
-    <nav className="hidden md:flex w-60 h-screen bg-gradient-to-b from-[#05010f] to-[#12042e] text-white flex-col items-center py-2 fixed shadow-2xl border-r border-cyan-500/20">
+    <nav className="hidden lg:flex w-60 h-screen bg-gradient-to-b from-[#05010f] to-[#12042e] text-white flex-col items-center py-2 fixed shadow-2xl border-r border-cyan-500/20">
       <div className="relative my-2">
         <span className="absolute -inset-2 rounded-full bg-gradient-to-tr from-cyan-400 via-purple-600 to-fuchsia-500 blur-md opacity-50 animate-pulse z-0"></span>
         <img

@@ -63,15 +63,15 @@ const columns: { title: string; accent: string; items: Skill[] }[][] = [
 ];
 
 const SkillRow = ({ skill, accent }: { skill: Skill; accent: string }) => (
-    <li className="flex items-center gap-3">
-        <span className="w-7 shrink-0 text-xl">{skill.icon}</span>
-        <span className="w-20 shrink-0 truncate text-xs font-semibold themed-text-primary sm:w-32 sm:text-base">
+    <li className="flex items-center gap-2 sm:gap-3">
+        <span className="w-6 shrink-0 text-lg sm:w-7 sm:text-xl">{skill.icon}</span>
+        <span className="w-16 shrink-0 truncate text-[11px] font-semibold themed-text-primary sm:w-32 sm:text-base">
             {skill.name}
         </span>
-        <div className="skill-meter skill-meter-lg min-w-0 flex-1">
+        <div className="skill-meter min-w-0 flex-1">
             <span style={{ width: `${skill.level}%`, background: accent }} />
         </div>
-        <span className="w-10 shrink-0 text-right font-mono text-sm themed-text-muted">
+        <span className="w-8 shrink-0 text-right font-mono text-[11px] themed-text-muted sm:w-10 sm:text-sm">
             {skill.level}%
         </span>
     </li>
@@ -79,7 +79,7 @@ const SkillRow = ({ skill, accent }: { skill: Skill; accent: string }) => (
 
 const Skills = () => {
     return (
-        <div className="flex h-full w-full min-h-0 flex-col justify-center gap-4 pt-5 sm:pt-8">
+        <div className="flex h-full w-full min-h-0 flex-col justify-center gap-3 py-6 sm:gap-4 sm:pt-8">
             <div>
                 <p className="section-kicker">04 — Stack</p>
                 <h2 className="themed-accent-text text-[clamp(1.35rem,3vw,2.1rem)] font-extrabold leading-tight">
@@ -87,12 +87,12 @@ const Skills = () => {
                 </h2>
             </div>
 
-            <div className="grid min-h-0 grid-cols-2 gap-2 sm:gap-4 md:gap-6">
+            <div className="grid min-h-0 grid-cols-1 gap-3 md:grid-cols-2 md:gap-4 lg:gap-6">
                 {columns.map((column) => (
-                    <div key={column[0].title} className="flex min-h-0 flex-col gap-4">
+                    <div key={column[0].title} className="flex min-h-0 flex-col gap-3 sm:gap-4">
                         {column.map((group) => (
-                            <section key={group.title} className="themed-surface rounded-2xl p-4 sm:p-5">
-                                <h3 className="mb-3 text-base font-bold" style={{ color: group.accent }}>
+                            <section key={group.title} className="themed-surface rounded-2xl p-3 sm:p-5">
+                                <h3 className="mb-2 text-sm font-bold sm:mb-3 sm:text-base" style={{ color: group.accent }}>
                                     {group.title}
                                 </h3>
                                 <ul className="space-y-2 sm:space-y-3">

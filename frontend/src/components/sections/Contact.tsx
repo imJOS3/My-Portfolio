@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { FaGithub, FaLinkedin, FaInstagram, FaFacebook, FaEnvelope, FaWhatsapp } from "react-icons/fa";
 import ProfileImage from "../../assets/pfpPorfolioCartoon.png";
 import { attributionToEventProps, getLastAttribution } from "../../lib/attribution";
+import BuiltWith from "./BuiltWith";
 
 const EMAIL = "josebenjuema2005@gmail.com";
 const WHATSAPP_URL =
@@ -51,7 +52,8 @@ const Contact = () => {
   }, [open]);
 
   return (
-    <div className="flex h-full w-full items-center justify-center px-1">
+    <div className="flex h-full w-full min-h-0 flex-col">
+      <div className="flex min-h-0 flex-1 items-center justify-center px-1">
       <article className="contact-card grid w-full max-w-4xl items-center gap-6 p-5 sm:p-8 lg:grid-cols-[0.7fr_1.3fr] lg:p-10">
         <img
           src={ProfileImage}
@@ -139,6 +141,8 @@ const Contact = () => {
           </div>
         </div>
       </article>
+      </div>
+      <BuiltWith />
     </div>
   );
 };

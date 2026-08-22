@@ -59,7 +59,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="relative flex h-full w-full min-h-0 items-center overflow-visible">
+    <div className="relative flex h-full w-full min-h-0 items-center overflow-visible py-6 lg:py-0">
       <div className="section-orb -left-16 top-10 h-48 w-48 bg-[var(--accent-cyan)]" />
       <div className="section-orb right-4 bottom-8 h-56 w-56 bg-[var(--accent-fuchsia)] hidden md:block" />
 
@@ -72,7 +72,7 @@ const Home = () => {
 
           <p className="section-kicker mb-2">01 — Home</p>
 
-          <h1 className="font-extrabold text-[clamp(1.85rem,5vw,3.4rem)]">
+          <h1 className="min-h-[calc(2*1.35em+0.5rem)] font-extrabold text-[clamp(1.85rem,5vw,3.4rem)]">
             <span className="themed-accent-text block leading-[1.35] pb-1">
               {text1}
               {showCursor1 && <span className="typing-caret" />}
@@ -83,7 +83,7 @@ const Home = () => {
             </span>
           </h1>
 
-          <p className="mt-1 overflow-visible py-1 text-[clamp(0.95rem,2.2vw,1.25rem)] font-medium leading-normal themed-text-secondary">
+          <p className="mt-1 min-h-[1.75em] overflow-visible py-1 text-[clamp(0.95rem,2.2vw,1.25rem)] font-medium leading-normal themed-text-secondary">
             {text3}
             {showCursor3 && <span className="typing-caret" />}
           </p>

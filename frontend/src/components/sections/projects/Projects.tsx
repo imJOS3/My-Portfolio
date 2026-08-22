@@ -156,7 +156,7 @@ const Projects = () => {
 
     return (
         <>
-            <div className="relative flex h-full w-full min-h-0 flex-col overflow-hidden pt-6 sm:pt-8 lg:pt-10 pb-8 lg:pb-12">
+            <div className="relative flex h-full w-full min-h-0 flex-col overflow-x-clip pt-6 sm:pt-8 lg:overflow-hidden lg:pt-10 pb-8 lg:pb-12">
                 <div className="flex h-full min-h-0 flex-col">
                     <div className="flex shrink-0 items-end justify-between gap-3">
                         <div>
@@ -172,7 +172,7 @@ const Projects = () => {
                     </div>
 
                     <div
-                        className="relative min-h-0 flex-1"
+                        className="relative min-h-[13.5rem] flex-1 sm:min-h-[18rem] lg:min-h-0"
                         onTouchStart={(event) => {
                             touchX.current = event.touches[0].clientX;
                         }}
@@ -187,7 +187,7 @@ const Projects = () => {
                         <button
                             type="button"
                             onClick={() => go(-1)}
-                            className="absolute left-8 top-1/2 z-30 hidden size-11 -translate-y-1/2 items-center justify-center rounded-full border-2 border-[var(--accent-cyan)] bg-[var(--bg-base)] text-[var(--accent-cyan)] shadow-[0_0_18px_color-mix(in_srgb,var(--accent-cyan)_60%,transparent)] transition-colors hover:bg-[var(--accent-cyan)] hover:text-[var(--surface-solid)] sm:flex"
+                            className="absolute left-1 top-1/2 z-30 flex size-9 -translate-y-1/2 items-center justify-center rounded-full border-2 border-[var(--accent-cyan)] bg-[var(--bg-base)] text-[var(--accent-cyan)] sm:left-8 sm:size-11"
                             aria-label="Previous project"
                         >
                             <FaChevronLeft className="text-sm" />
@@ -238,7 +238,7 @@ const Projects = () => {
                         <button
                             type="button"
                             onClick={() => go(1)}
-                            className="absolute right-8 top-1/2 z-30 hidden size-11 -translate-y-1/2 items-center justify-center rounded-full border-2 border-[var(--accent-cyan)] bg-[var(--bg-base)] text-[var(--accent-cyan)] shadow-[0_0_18px_color-mix(in_srgb,var(--accent-cyan)_60%,transparent)] transition-colors hover:bg-[var(--accent-cyan)] hover:text-[var(--surface-solid)] sm:flex"
+                            className="absolute right-1 top-1/2 z-30 flex size-9 -translate-y-1/2 items-center justify-center rounded-full border-2 border-[var(--accent-cyan)] bg-[var(--bg-base)] text-[var(--accent-cyan)] sm:right-8 sm:size-11"
                             aria-label="Next project"
                         >
                             <FaChevronRight className="text-sm" />

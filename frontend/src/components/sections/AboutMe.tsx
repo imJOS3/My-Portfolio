@@ -10,7 +10,7 @@ const facts = [
 
 const AboutMe = () => {
     return (
-        <div className="relative flex h-full w-full min-h-0 flex-col justify-center gap-3 sm:gap-4">
+        <div className="relative flex h-full w-full min-h-0 flex-col justify-center gap-3 py-6 sm:gap-4">
             <div className="section-orb left-1/3 -top-8 h-40 w-40 bg-[var(--accent-fuchsia)]" />
 
             <div className="relative flex items-center gap-4 lg:grid lg:grid-cols-[0.34fr_0.66fr] lg:gap-8">

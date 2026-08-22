@@ -40,7 +40,7 @@ function resolvePath(
   itemParam?: string
 ): ResolvedPath | null {
   if (!groupParam && !itemParam) {
-    const groupSlug = hobby.groups[0]?.slug ?? "all";
+    const groupSlug = "all";
     const itemId = itemsForGroup(hobby, groupSlug)[0]?.id;
     return itemId ? { groupSlug, itemId } : null;
   }

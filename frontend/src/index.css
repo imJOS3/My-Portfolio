@@ -113,11 +113,13 @@ html, body {
   max-width: 100vw;
 }
 
-/* Home: una sección = una pantalla, snap al cambiar */
+/* Home: scroll libre y estable en móvil/tablet. Snap solo en desktop.
+   No usar 100dvh aquí: al mostrar/ocultar la barra del browser el
+   viewport cambia y todas las secciones “saltan” solas. */
 html.home-snap {
-  scroll-snap-type: y mandatory;
-  scroll-behavior: smooth;
   overflow-y: auto;
+  overflow-anchor: none;
+  scroll-behavior: auto;
 }
 html.modal-lock {
   overflow: hidden !important;
@@ -126,11 +128,28 @@ html.modal-lock {
 }
 .snap-section {
   box-sizing: border-box;
-  height: 100dvh;
-  max-height: 100dvh;
-  overflow: hidden;
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
+  min-height: 0;
+  overflow: visible;
+  overflow-anchor: none;
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  .snap-section {
+    scroll-margin-top: 4.25rem;
+  }
+}
+@media (min-width: 1024px) {
+  html.home-snap {
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+    overscroll-behavior-y: contain;
+  }
+  .snap-section {
+    height: 100dvh;
+    max-height: 100dvh;
+    overflow: hidden;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
 }
 
 @keyframes levitate {
@@ -155,9 +174,14 @@ body {
     100% 100%,
     100% 100%,
     100% 100%;
-  background-attachment: fixed;
+  background-attachment: scroll;
   min-height: 100vh;
   margin: 0;
+}
+@media (min-width: 1024px) {
+  body {
+    background-attachment: fixed;
+  }
 }
 
 .animate-levitate {
@@ -292,6 +316,27 @@ body {
   transform: translateY(0);
 }
 
+@media (max-width: 1023px) {
+  .section-animate,
+  .section-animate.visible,
+  .fade-scale,
+  .slide-right,
+  .slide-left,
+  .slide-up,
+  .slide-down,
+  .fade-rotate,
+  .fade-scale.visible,
+  .slide-right.visible,
+  .slide-left.visible,
+  .slide-up.visible,
+  .slide-down.visible,
+  .fade-rotate.visible {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
 /* Scrollbar personalizado con variables de tema */
 ::-webkit-scrollbar {
   width: 12px;
@@ -336,13 +381,53 @@ body {
   );
 }
 
+.hobby-page {
+  position: relative;
+  display: flex;
+  min-height: 100vh;
+  min-height: 100svh;
+  flex-direction: column;
+  overflow-x: hidden;
+  overflow-anchor: none;
+}
+@media (min-width: 1024px) {
+  .hobby-page {
+    height: 100dvh;
+    overflow: hidden;
+  }
+}
+
 .hobby-perspective {
-  perspective: 1400px;
+  perspective: 900px;
   transform-style: preserve-3d;
 }
+@media (min-width: 768px) {
+  .hobby-perspective {
+    perspective: 1400px;
+  }
+}
 .hobby-coverflow-card {
+  --cover-step: 4.15rem;
   transform-style: preserve-3d;
   transition: transform 0.45s ease, opacity 0.45s ease, filter 0.45s ease;
+}
+@media (min-width: 640px) {
+  .hobby-coverflow-card {
+    --cover-step: 5.6rem;
+  }
+}
+@media (min-width: 768px) {
+  .hobby-coverflow-card {
+    --cover-step: 7.2rem;
+  }
+}
+.hobby-coverflow-far {
+  display: none;
+}
+@media (min-width: 768px) {
+  .hobby-coverflow-far {
+    display: block;
+  }
 }
 
 @keyframes ring-spin {
@@ -500,8 +585,14 @@ body {
 
 .project-stage {
   position: relative;
+  min-height: 13.5rem;
   perspective: 1600px;
   transform-style: preserve-3d;
+}
+@media (min-width: 640px) {
+  .project-stage {
+    min-height: 18rem;
+  }
 }
 .project-card-3d {
   transform-style: preserve-3d;

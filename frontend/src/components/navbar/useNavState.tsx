@@ -75,6 +75,19 @@ export const NavProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     window.sessionStorage.setItem(LAST_SECTION_STORAGE_KEY, activeSection);
   }, [activeSection]);
 
+  useEffect(() => {
+    if (!open) return;
+    const html = document.documentElement;
+    const prevHtml = html.style.overflow;
+    const prevBody = document.body.style.overflow;
+    html.style.overflow = "hidden";
+    document.body.style.overflow = "hidden";
+    return () => {
+      html.style.overflow = prevHtml;
+      document.body.style.overflow = prevBody;
+    };
+  }, [open]);
+
   // Guardar y restaurar posición de scroll al recargar (solo en el portafolio).
   // Otras rutas (/theme, /open, etc.) deben empezar arriba, no heredar el scroll de Home.
   useEffect(() => {
@@ -91,14 +104,21 @@ export const NavProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const savedY = savedRaw ? Number.parseInt(savedRaw, 10) : 0;
     let cancelled = false;
     let tries = 0;
+    let userMoved = false;
 
     const saveScroll = () => {
       if (!isPortfolioHome()) return;
       window.sessionStorage.setItem(SCROLL_Y_STORAGE_KEY, String(Math.round(window.scrollY)));
     };
 
+    const markUserMoved = () => {
+      userMoved = true;
+    };
+
     const restoreScroll = () => {
-      if (cancelled || !isPortfolioHome() || !savedY || Number.isNaN(savedY) || savedY <= 0) return;
+      if (cancelled || userMoved || !isPortfolioHome() || !savedY || Number.isNaN(savedY) || savedY <= 0) {
+        return;
+      }
 
       const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
       // Espera a que la página tenga altura suficiente (imágenes / lazy)
@@ -133,6 +153,9 @@ export const NavProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("pagehide", saveScroll);
     window.addEventListener("beforeunload", saveScroll);
+    window.addEventListener("touchstart", markUserMoved, { passive: true, once: true });
+    window.addEventListener("wheel", markUserMoved, { passive: true, once: true });
+    window.addEventListener("pointerdown", markUserMoved, { passive: true, once: true });
 
     return () => {
       cancelled = true;
@@ -142,6 +165,9 @@ export const NavProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("pagehide", saveScroll);
       window.removeEventListener("beforeunload", saveScroll);
+      window.removeEventListener("touchstart", markUserMoved);
+      window.removeEventListener("wheel", markUserMoved);
+      window.removeEventListener("pointerdown", markUserMoved);
     };
   }, []);
 
@@ -223,7 +249,24 @@ export const NavProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setActiveSection(id);
     window.sessionStorage.setItem(LAST_SECTION_STORAGE_KEY, id);
 
-    el.scrollIntoView({ behavior: "smooth", block: "start" });
+    const desktop = window.matchMedia("(min-width: 1024px)").matches;
+    const tablet = window.matchMedia("(min-width: 768px) and (max-width: 1023px)").matches;
+    if (desktop) {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    } else if (tablet) {
+      const top = el.getBoundingClientRect().top + window.scrollY - 72;
+      window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
+    } else {
+      const navClearance = 88;
+      const view = window.innerHeight - navClearance;
+      const top = el.getBoundingClientRect().top + window.scrollY;
+      const y =
+        el.offsetHeight <= view
+          ? top - (view - el.offsetHeight) / 2
+          : top - 12;
+      window.scrollTo({ top: Math.max(0, y), behavior: "smooth" });
+    }
+
     setOpen(false);
   };
 
