@@ -1,12 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { FaGithub, FaLinkedin, FaInstagram, FaFacebook, FaEnvelope, FaWhatsapp } from "react-icons/fa";
 import ProfileImage from "../../assets/pfpPorfolioCartoon.png";
-
-declare global {
-  interface Window {
-    dataLayer: Record<string, unknown>[];
-  }
-}
+import { attributionToEventProps, getLastAttribution } from "../../lib/attribution";
 
 const EMAIL = "josebenjuema2005@gmail.com";
 const WHATSAPP_URL =
@@ -26,6 +21,7 @@ const trackContact = (buttonName: string) => {
     event: "contact_button_click",
     button_name: buttonName,
     page_section: "Contact Section",
+    ...attributionToEventProps(getLastAttribution()),
   });
 };
 

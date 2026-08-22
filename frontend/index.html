@@ -21,6 +21,74 @@
         } catch (e) {}
       })();
     </script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      (function () {
+        try {
+          var SHORT = {
+            cv: { source: "cv", medium: "document", campaign: "resume" },
+            gh: { source: "github", medium: "social", campaign: "repo" },
+            in: { source: "linkedin", medium: "social", campaign: "profile" },
+            ct: { source: "computrabajo", medium: "job_board", campaign: "" },
+            mg: { source: "magneto", medium: "job_board", campaign: "" }
+          };
+          var p = new URLSearchParams(location.search);
+          var q = function (k) { return (p.get(k) || "").trim(); };
+          var ref = "";
+          try { ref = document.referrer ? new URL(document.referrer).hostname.replace(/^www\./, "") : ""; } catch (e) {}
+          var parts = location.pathname.replace(/\/+$/, "").split("/").filter(Boolean);
+          var code = parts[0] || "";
+          var employer = (parts[1] || "").toLowerCase();
+          var preset = SHORT[code];
+          var source = q("utm_source").toLowerCase();
+          var medium = q("utm_medium").toLowerCase();
+          var campaign = q("utm_campaign");
+          var content = q("utm_content");
+          var term = q("utm_term");
+          var kind = "direct";
+          var entry = "manual";
+          if (source || medium || campaign) {
+            kind = "campaign";
+            entry = "tagged";
+            medium = medium || "campaign";
+            source = source || "unknown";
+          } else if (preset) {
+            source = preset.source;
+            medium = employer && (code === "in" || code === "ct" || code === "mg")
+              ? "job_board"
+              : preset.medium;
+            campaign = employer || preset.campaign;
+            kind = "campaign";
+            entry = "tagged";
+          }
+          var payload = {
+            event: "portfolio_landing",
+            traffic_source: source || "direct",
+            traffic_medium: medium || "none",
+            traffic_campaign: campaign,
+            traffic_content: content,
+            traffic_term: term,
+            traffic_kind: kind,
+            traffic_entry: entry,
+            traffic_referrer: ref,
+            landing_path: location.pathname,
+            utm_source: q("utm_source"),
+            utm_medium: q("utm_medium"),
+            utm_campaign: campaign,
+            utm_content: content,
+            utm_term: term
+          };
+          if (entry === "tagged") {
+            payload.source = source;
+            payload.medium = medium;
+            payload.campaign = campaign;
+            payload.content = content;
+            payload.term = term;
+          }
+          window.dataLayer.push(payload);
+        } catch (e) {}
+      })();
+    </script>
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
