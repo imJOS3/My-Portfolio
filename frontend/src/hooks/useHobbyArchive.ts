@@ -59,13 +59,12 @@ function resolvePath(
   if (!itemParam) return null;
 
   const itemId = resolveHobbyItemId(hobby, itemParam);
-  const groupOk = isHobbyGroupSlug(hobby, groupParam);
 
   if (itemId && groupParam === "all") {
     return { groupSlug: "all", itemId };
   }
 
-  if (itemId && groupOk) {
+  if (itemId && isHobbyGroupSlug(hobby, groupParam)) {
     const inGroup = itemsForGroup(hobby, groupParam).some((entry) => entry.id === itemId);
     if (inGroup) return { groupSlug: groupParam, itemId };
     return { groupSlug: groupSlugForItem(hobby, itemId), itemId };
@@ -75,7 +74,7 @@ function resolvePath(
     return { groupSlug: groupSlugForItem(hobby, itemId), itemId };
   }
 
-  if (groupOk) {
+  if (isHobbyGroupSlug(hobby, groupParam)) {
     const fallback = itemsForGroup(hobby, groupParam)[0]?.id;
     return fallback ? { groupSlug: groupParam, itemId: fallback } : null;
   }

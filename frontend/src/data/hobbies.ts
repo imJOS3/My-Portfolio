@@ -579,7 +579,10 @@ export function getHobbyItem(hobby: HobbyCategory, itemId: string | undefined) {
   return hobby.items.find((item) => item.id === resolved) ?? hobby.items[0];
 }
 
-export function isHobbyGroupSlug(hobby: HobbyCategory, slug: string | undefined) {
+export function isHobbyGroupSlug(
+  hobby: HobbyCategory,
+  slug: string | undefined
+): slug is string {
   if (!slug) return false;
   return slug === "all" || hobby.groups.some((group) => group.slug === slug);
 }
