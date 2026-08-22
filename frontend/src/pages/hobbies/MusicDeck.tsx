@@ -13,6 +13,7 @@ export function MusicDeck({ archive }: { archive: HobbyArchive }) {
     total,
     index,
     groupKey,
+    groupLabel,
     setGroupKey,
     showGroups,
   } = archive;
@@ -43,16 +44,12 @@ export function MusicDeck({ archive }: { archive: HobbyArchive }) {
         {showGroups && (
           <div className="shrink-0 mb-3 grid grid-cols-3 gap-1.5">
             {hobby.groups.map((group) => {
-              const active = groupKey === group.label;
+              const active = groupKey === group.slug;
               return (
                 <button
-                  key={group.label}
+                  key={group.slug}
                   type="button"
-                  onClick={() => {
-                    setGroupKey(group.label);
-                    const firstId = group.itemIds[0];
-                    if (firstId) goTo(firstId);
-                  }}
+                  onClick={() => setGroupKey(group.slug)}
                   className={`rounded-full border px-2 py-1.5 text-[10px] sm:text-xs font-semibold uppercase tracking-[0.12em] ${
                     active
                       ? "themed-btn-gradient border-transparent text-[var(--surface-solid)]"
@@ -99,7 +96,7 @@ export function MusicDeck({ archive }: { archive: HobbyArchive }) {
             </p>
 
             <p className="text-[10px] uppercase tracking-[0.22em] themed-text-muted mb-2">
-              {groupKey === "all" ? "Queue" : groupKey}
+              {groupKey === "all" ? "Queue" : groupLabel}
             </p>
             <ol className="min-h-0 flex-1 overflow-y-auto space-y-1">
               {visible.map((entry, i) => {

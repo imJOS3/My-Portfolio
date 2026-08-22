@@ -1,9 +1,13 @@
-import { useEffect, useMemo, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useLayoutEffect, useMemo } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import {
   getHobby,
-  getHobbyItem,
+  groupLabelForSlug,
+  groupSlugForItem,
+  hobbyItemPath,
+  isHobbyGroupSlug,
   itemsForGroup,
+  resolveHobbyItemId,
   type HobbyCategory,
   type HobbyItem,
 } from "../data/hobbies";
@@ -16,6 +20,7 @@ export type HobbyArchive = {
   total: number;
   catalogTotal: number;
   groupKey: string;
+  groupLabel: string;
   setGroupKey: (key: string) => void;
   showGroups: boolean;
   goTo: (id: string) => void;
@@ -24,69 +29,133 @@ export type HobbyArchive = {
   backdrop: string;
 };
 
-export function useHobbyArchive(): HobbyArchive | null {
-  const { hobbyId, itemId } = useParams<{ hobbyId: string; itemId?: string }>();
-  const navigate = useNavigate();
-  const hobby = getHobby(hobbyId);
-  const [groupKey, setGroupKey] = useState(() => {
-    const current = getHobby(hobbyId);
-    if (current?.id === "music" && current.groups[0]) {
-      return current.groups[0].label;
-    }
-    return "all";
-  });
+type ResolvedPath = {
+  groupSlug: string;
+  itemId: string;
+};
 
-  const item = hobby ? getHobbyItem(hobby, itemId) : undefined;
-  const visible = useMemo(
-    () => (hobby ? itemsForGroup(hobby, groupKey) : []),
-    [hobby, groupKey]
+function resolvePath(
+  hobby: HobbyCategory,
+  groupParam?: string,
+  itemParam?: string
+): ResolvedPath | null {
+  if (!groupParam && !itemParam) {
+    const groupSlug = hobby.groups[0]?.slug ?? "all";
+    const itemId = itemsForGroup(hobby, groupSlug)[0]?.id;
+    return itemId ? { groupSlug, itemId } : null;
+  }
+
+  if (groupParam && !itemParam) {
+    if (isHobbyGroupSlug(hobby, groupParam)) {
+      const itemId = itemsForGroup(hobby, groupParam)[0]?.id;
+      return itemId ? { groupSlug: groupParam, itemId } : null;
+    }
+
+    const itemId = resolveHobbyItemId(hobby, groupParam);
+    if (!itemId) return null;
+    return { groupSlug: groupSlugForItem(hobby, itemId), itemId };
+  }
+
+  if (!itemParam) return null;
+
+  const itemId = resolveHobbyItemId(hobby, itemParam);
+  const groupOk = isHobbyGroupSlug(hobby, groupParam);
+
+  if (itemId && groupParam === "all") {
+    return { groupSlug: "all", itemId };
+  }
+
+  if (itemId && groupOk) {
+    const inGroup = itemsForGroup(hobby, groupParam).some((entry) => entry.id === itemId);
+    if (inGroup) return { groupSlug: groupParam, itemId };
+    return { groupSlug: groupSlugForItem(hobby, itemId), itemId };
+  }
+
+  if (itemId) {
+    return { groupSlug: groupSlugForItem(hobby, itemId), itemId };
+  }
+
+  if (groupOk) {
+    const fallback = itemsForGroup(hobby, groupParam)[0]?.id;
+    return fallback ? { groupSlug: groupParam, itemId: fallback } : null;
+  }
+
+  return null;
+}
+
+export function useHobbyArchive(): HobbyArchive | null {
+  const { hobbyId, groupSlug: groupParam, itemId: itemParam } = useParams<{
+    hobbyId: string;
+    groupSlug?: string;
+    itemId?: string;
+  }>();
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const hobby = getHobby(hobbyId);
+  const resolved = useMemo(
+    () => (hobby ? resolvePath(hobby, groupParam, itemParam) : null),
+    [hobby, groupParam, itemParam]
   );
-  const index = item ? visible.findIndex((entry) => entry.id === item.id) : 0;
+
+  useLayoutEffect(() => {
+    if (!hobby || !resolved) return;
+    const canonical = hobbyItemPath(hobby.id, resolved.groupSlug, resolved.itemId);
+    if (pathname !== canonical) {
+      navigate(canonical, { replace: true });
+    }
+  }, [hobby, resolved, pathname, navigate]);
+
+  const visible = useMemo(
+    () => (hobby && resolved ? itemsForGroup(hobby, resolved.groupSlug) : []),
+    [hobby, resolved]
+  );
+
+  useEffect(() => {
+    if (!hobby || !resolved || visible.length === 0) return;
+
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+      const dir = event.key === "ArrowLeft" ? -1 : 1;
+      const current = visible.findIndex((entry) => entry.id === resolved.itemId);
+      const safeIndex = current < 0 ? 0 : current;
+      const next = visible[(safeIndex + dir + visible.length) % visible.length];
+      const nextGroup =
+        resolved.groupSlug === "all" ? "all" : groupSlugForItem(hobby, next.id);
+      navigate(hobbyItemPath(hobby.id, nextGroup, next.id), { replace: true });
+    };
+
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [hobby, resolved, visible, navigate]);
+
+  if (!hobby || !resolved) return null;
+
+  const item = hobby.items.find((entry) => entry.id === resolved.itemId);
+  if (!item) return null;
+
+  const index = visible.findIndex((entry) => entry.id === item.id);
   const total = visible.length;
+  const groupKey = resolved.groupSlug;
 
   const goTo = (nextId: string) => {
-    if (!hobby) return;
-    navigate(`/open/${hobby.id}/${nextId}`, { replace: true });
+    const nextGroup =
+      groupKey === "all" ? "all" : groupSlugForItem(hobby, nextId);
+    navigate(hobbyItemPath(hobby.id, nextGroup, nextId), { replace: true });
   };
 
-  const selectGroup = (key: string) => {
-    setGroupKey(key);
-    if (!hobby) return;
-    const nextVisible = itemsForGroup(hobby, key);
-    const stays = item ? nextVisible.some((entry) => entry.id === item.id) : false;
-    if (!stays && nextVisible[0]) {
-      navigate(`/open/${hobby.id}/${nextVisible[0].id}`, { replace: true });
-    }
+  const selectGroup = (slug: string) => {
+    const nextVisible = itemsForGroup(hobby, slug);
+    const stays = nextVisible.some((entry) => entry.id === item.id);
+    const nextId = stays ? item.id : nextVisible[0]?.id;
+    if (!nextId) return;
+    navigate(hobbyItemPath(hobby.id, slug, nextId), { replace: true });
   };
 
   const step = (dir: -1 | 1) => {
-    if (!hobby || total === 0) return;
+    if (total === 0) return;
     const safeIndex = index < 0 ? 0 : index;
-    const next = (safeIndex + dir + total) % total;
-    goTo(visible[next].id);
+    goTo(visible[(safeIndex + dir + total) % total].id);
   };
-
-  useEffect(() => {
-    if (!hobby || !item || visible.length === 0) return;
-    if (!visible.some((entry) => entry.id === item.id)) {
-      goTo(visible[0].id);
-    }
-  }, [groupKey, hobby, item, visible]);
-
-  useEffect(() => {
-    const onKey = (event: KeyboardEvent) => {
-      if (!hobby || total === 0) return;
-      if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
-      const dir = event.key === "ArrowLeft" ? -1 : 1;
-      const safeIndex = index < 0 ? 0 : index;
-      const next = (safeIndex + dir + total) % total;
-      navigate(`/open/${hobby.id}/${visible[next].id}`, { replace: true });
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [hobby, index, total, visible, navigate]);
-
-  if (!hobby || !item) return null;
 
   return {
     hobby,
@@ -96,6 +165,7 @@ export function useHobbyArchive(): HobbyArchive | null {
     total,
     catalogTotal: hobby.items.length,
     groupKey,
+    groupLabel: groupLabelForSlug(hobby, groupKey),
     setGroupKey: selectGroup,
     showGroups: hobby.groups.length > 1,
     goTo,

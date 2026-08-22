@@ -41,6 +41,7 @@ export type HobbyItem = {
 
 export type HobbyGroup = {
   label: string;
+  slug: string;
   itemIds: string[];
 };
 
@@ -65,12 +66,13 @@ export const HOBBIES: HobbyCategory[] = [
     glow: "rgba(34, 211, 238, 0.35)",
     icon: "games",
     groups: [
-      { label: "Mobile", itemIds: ["clash-royale", "free-fire"] },
+      { label: "Mobile", slug: "mobile", itemIds: ["clash-royale", "free-fire"] },
       {
         label: "PC",
+        slug: "pc",
         itemIds: ["space-marine-2", "limbo", "little-nightmares", "hollow-knight", "left-4-dead"],
       },
-      { label: "Geometry Dash", itemIds: ["geometry-dash"] },
+      { label: "Geometry Dash", slug: "geometry-dash", itemIds: ["geometry-dash"] },
     ],
     items: [
       {
@@ -196,10 +198,11 @@ export const HOBBIES: HobbyCategory[] = [
     groups: [
       {
         label: "Experimental",
+        slug: "experimental",
         itemIds: ["steins-gate", "serial-experiments-lain", "welcome-nhk"],
       },
-      { label: "Romcom", itemIds: ["love-is-war"] },
-      { label: "Favorites", itemIds: ["code-geass", "naruto", "fairy-tail"] },
+      { label: "Romcom", slug: "romcom", itemIds: ["love-is-war"] },
+      { label: "Favorites", slug: "favorites", itemIds: ["code-geass", "naruto", "fairy-tail"] },
     ],
     items: [
       {
@@ -299,9 +302,10 @@ export const HOBBIES: HobbyCategory[] = [
     groups: [
       {
         label: "Teams",
+        slug: "teams",
         itemIds: ["junior", "monaco", "tottenham", "dortmund"],
       },
-      { label: "Idols", itemIds: ["ozil", "reus", "cr7", "falcao"] },
+      { label: "Idols", slug: "idols", itemIds: ["ozil", "reus", "cr7", "falcao"] },
     ],
     items: [
       {
@@ -428,20 +432,23 @@ export const HOBBIES: HobbyCategory[] = [
     groups: [
       {
         label: "Música favorita",
-        itemIds: ["fav-betrayed", "crybaby", "xxx-question"],
+        slug: "favorites",
+        itemIds: ["betrayed", "crybaby", "question"],
       },
       {
         label: "Artistas",
-        itemIds: ["lil-xan", "diomedes", "lil-peep", "xxxtentacion", "luister"],
+        slug: "artists",
+        itemIds: ["lil-xan", "lil-peep", "xxxtentacion"],
       },
       {
         label: "Género",
-        itemIds: ["genre-trap", "genre-melodic-rap", "genre-vallenato", "genre-champeta"],
+        slug: "genre",
+        itemIds: ["trap", "melodic-rap", "hyperpop"],
       },
     ],
     items: [
       {
-        id: "fav-betrayed",
+        id: "betrayed",
         title: "Betrayed",
         shortTitle: "Betrayed",
         credit: "Lil Xan",
@@ -465,7 +472,7 @@ export const HOBBIES: HobbyCategory[] = [
         poster: deezerCover("c09607358e115d37b1ad50d2ecfc1e3a"),
       },
       {
-        id: "xxx-question",
+        id: "question",
         title: "?",
         shortTitle: "?",
         credit: "XXXTentacion · 2018",
@@ -487,17 +494,6 @@ export const HOBBIES: HobbyCategory[] = [
           "The voice on Betrayed. SoundCloud-era trap, that 2017 bounce — Lil Xan is the name I attach to that whole stretch of headphones-on nights.",
         tags: ["Trap", "SoundCloud", "Artista"],
         poster: deezerArtist("4309afebdc7f6eac90f7c8acfd2add34"),
-      },
-      {
-        id: "diomedes",
-        title: "Diomedes Díaz",
-        shortTitle: "Diomedes",
-        credit: "El Cacique de La Junta",
-        platform: "Artista",
-        description:
-          "The king of vallenato. Voice, stories, the Costa that does not need a translator. Diomedes is not background music — it is the table, the party, the country.",
-        tags: ["Vallenato", "Colombia", "Leyenda"],
-        poster: deezerArtist("fd9922415127264b9708992d5b0908a4"),
       },
       {
         id: "lil-peep",
@@ -523,18 +519,7 @@ export const HOBBIES: HobbyCategory[] = [
         poster: deezerArtist("62e6edfaf5461eeb5b7310903229607a"),
       },
       {
-        id: "luister",
-        title: "Luister La Voz",
-        shortTitle: "Luister",
-        credit: "Cartagena · La Voz",
-        platform: "Artista",
-        description:
-          "Luister La Voz. Champeta with urbano blood, Cartagena in the chest. The voice I put on when the night needs Costa — not a study playlist, a pickup.",
-        tags: ["Champeta", "Urbano", "Cartagena"],
-        poster: deezerArtist("5d26e98e1642755419142cfea8ed65d3"),
-      },
-      {
-        id: "genre-trap",
+        id: "trap",
         title: "Trap",
         shortTitle: "Trap",
         credit: "808s · SoundCloud",
@@ -545,7 +530,7 @@ export const HOBBIES: HobbyCategory[] = [
         poster: deezerCover("fca0f60b0c5a77dd8989ee1d75d6e9b5"),
       },
       {
-        id: "genre-melodic-rap",
+        id: "melodic-rap",
         title: "Melodic rap",
         shortTitle: "Melodic rap",
         credit: "Guitar + 808",
@@ -556,38 +541,60 @@ export const HOBBIES: HobbyCategory[] = [
         poster: deezerCover("c09607358e115d37b1ad50d2ecfc1e3a"),
       },
       {
-        id: "genre-vallenato",
-        title: "Vallenato",
-        shortTitle: "Vallenato",
-        credit: "Caja · acordeón · costa",
+        id: "hyperpop",
+        title: "Hyperpop",
+        shortTitle: "Hyperpop",
+        credit: "Maxed-out pop",
         platform: "Género",
         description:
-          "The Colombian one. Accordion, caja, the stories you grow up hearing at family volume. This is home in a genre — Diomedes is the throne.",
-        tags: ["Género", "Colombia", "Costa"],
-        poster: deezerArtist("fd9922415127264b9708992d5b0908a4"),
-      },
-      {
-        id: "genre-champeta",
-        title: "Champeta",
-        shortTitle: "Champeta",
-        credit: "Cartagena · pickup",
-        platform: "Género",
-        description:
-          "The Cartagena pulse. Champeta, afrobeat, urbano costeño — the lane Luister La Voz carries without dropping the Caribbean flag.",
-        tags: ["Género", "Urbano", "Costa"],
-        poster: deezerArtist("5d26e98e1642755419142cfea8ed65d3"),
+          "Pop with the gain slammed. Pitch-shifted vocals, glitch, sugar-rush drops — the lane I put on when trap is too slow and a normal chorus is not enough.",
+        tags: ["Género", "Glitch", "PC Music"],
+        poster: deezerCover("99de7c29e3883776293aef6b0de88384"),
       },
     ],
   },
 ];
 
+const LEGACY_ITEM_IDS: Record<string, string> = {
+  "fav-betrayed": "betrayed",
+  "xxx-question": "question",
+  "genre-trap": "trap",
+  "genre-melodic-rap": "melodic-rap",
+  "genre-hyperpop": "hyperpop",
+};
+
 export function getHobby(id: string | undefined) {
   return HOBBIES.find((hobby) => hobby.id === id);
 }
 
+export function resolveHobbyItemId(hobby: HobbyCategory, raw: string | undefined) {
+  if (!raw) return undefined;
+  const mapped = LEGACY_ITEM_IDS[raw] ?? raw;
+  return hobby.items.some((item) => item.id === mapped) ? mapped : undefined;
+}
+
 export function getHobbyItem(hobby: HobbyCategory, itemId: string | undefined) {
-  if (!itemId) return hobby.items[0];
-  return hobby.items.find((item) => item.id === itemId) ?? hobby.items[0];
+  const resolved = resolveHobbyItemId(hobby, itemId);
+  if (!resolved) return hobby.items[0];
+  return hobby.items.find((item) => item.id === resolved) ?? hobby.items[0];
+}
+
+export function isHobbyGroupSlug(hobby: HobbyCategory, slug: string | undefined) {
+  if (!slug) return false;
+  return slug === "all" || hobby.groups.some((group) => group.slug === slug);
+}
+
+export function groupSlugForItem(hobby: HobbyCategory, itemId: string) {
+  return hobby.groups.find((group) => group.itemIds.includes(itemId))?.slug ?? "all";
+}
+
+export function groupLabelForSlug(hobby: HobbyCategory, slug: string) {
+  if (slug === "all") return "all";
+  return hobby.groups.find((group) => group.slug === slug)?.label ?? slug;
+}
+
+export function hobbyItemPath(hobbyId: string, groupSlug: string, itemId: string) {
+  return `/open/${hobbyId}/${groupSlug}/${itemId}`;
 }
 
 export function groupTitles(hobby: HobbyCategory) {
@@ -600,9 +607,9 @@ export function groupTitles(hobby: HobbyCategory) {
   }));
 }
 
-export function itemsForGroup(hobby: HobbyCategory, groupLabel: string | "all") {
-  if (groupLabel === "all") return hobby.items;
-  const group = hobby.groups.find((entry) => entry.label === groupLabel);
+export function itemsForGroup(hobby: HobbyCategory, groupSlug: string | "all") {
+  if (groupSlug === "all") return hobby.items;
+  const group = hobby.groups.find((entry) => entry.slug === groupSlug);
   if (!group) return hobby.items;
   return group.itemIds
     .map((id) => hobby.items.find((item) => item.id === id))

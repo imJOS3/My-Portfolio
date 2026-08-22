@@ -49,7 +49,7 @@ const SOURCE_HOSTS: { match: string; source: string; medium: string }[] = [
 const clean = (value: string | null | undefined) =>
   (value ?? "").trim().slice(0, MAX_VALUE);
 
-const lower = (value: string) => clean(value).toLowerCase();
+const lower = (value: string | null | undefined) => clean(value).toLowerCase();
 
 const referrerHost = () => {
   try {

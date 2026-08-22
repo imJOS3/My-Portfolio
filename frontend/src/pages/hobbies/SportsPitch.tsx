@@ -50,18 +50,21 @@ export function SportsPitch({ archive }: { archive: HobbyArchive }) {
 
         {showGroups && (
           <div className="shrink-0 mb-2 flex gap-1.5">
-            {["all", ...hobby.groups.map((group) => group.label)].map((key) => (
+            {[
+              { slug: "all", label: `Squad ${catalogTotal}` },
+              ...hobby.groups.map((group) => ({ slug: group.slug, label: group.label })),
+            ].map((tab) => (
               <button
-                key={key}
+                key={tab.slug}
                 type="button"
-                onClick={() => setGroupKey(key)}
+                onClick={() => setGroupKey(tab.slug)}
                 className={`flex-1 rounded-lg py-1.5 text-[10px] sm:text-xs font-black uppercase tracking-wider ${
-                  groupKey === key
+                  groupKey === tab.slug
                     ? "themed-btn-gradient border-transparent text-[var(--surface-solid)]"
                     : "bg-black/45 text-cyan-100/80 border border-cyan-400/20"
                 }`}
               >
-                {key === "all" ? `Squad ${catalogTotal}` : key}
+                {tab.label}
               </button>
             ))}
           </div>

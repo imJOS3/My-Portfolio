@@ -57,20 +57,23 @@ export function GamesVault({ archive }: { archive: HobbyArchive }) {
 
         {showGroups && (
           <div className="shrink-0 mb-2 flex gap-1.5 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-            {["all", ...hobby.groups.map((group) => group.label)].map((key) => {
-              const active = groupKey === key;
+            {[
+              { slug: "all", label: `All · ${catalogTotal}` },
+              ...hobby.groups.map((group) => ({ slug: group.slug, label: group.label })),
+            ].map((tab) => {
+              const active = groupKey === tab.slug;
               return (
                 <button
-                  key={key}
+                  key={tab.slug}
                   type="button"
-                  onClick={() => setGroupKey(key)}
+                  onClick={() => setGroupKey(tab.slug)}
                   className={`shrink-0 rounded-full border px-2.5 py-1 text-[10px] sm:text-xs font-semibold uppercase tracking-[0.14em] ${
                     active
                       ? "themed-btn-gradient border-transparent text-[var(--surface-solid)]"
                       : "themed-surface themed-text-secondary hover:border-[var(--surface-border-hover)]"
                   }`}
                 >
-                  {key === "all" ? `All · ${catalogTotal}` : key}
+                  {tab.label}
                 </button>
               );
             })}

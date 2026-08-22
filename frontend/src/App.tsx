@@ -32,7 +32,8 @@ function App() {
                             <Route path="/faq" element={<FaqPage />} />
                             <Route path="/open" element={<OpenPage />} />
                             <Route path="/open/:hobbyId" element={<HobbyDetailPage />} />
-                            <Route path="/open/:hobbyId/:itemId" element={<HobbyDetailPage />} />
+                            <Route path="/open/:hobbyId/:groupSlug" element={<HobbyDetailPage />} />
+                            <Route path="/open/:hobbyId/:groupSlug/:itemId" element={<HobbyDetailPage />} />
                             <Route path="/theme" element={<ThemePage />} />
                             <Route path="*" element={<NotFound />} />
                         </Routes>
