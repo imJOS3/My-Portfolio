@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /cv
+Disallow: /gh
+Disallow: /in
+Disallow: /ct
+Disallow: /mg
+
+Sitemap: https://josebenjumea.dev/sitemap.xml
