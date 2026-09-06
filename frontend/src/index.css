@@ -356,6 +356,35 @@ body {
   background: var(--scrollbar-track);
 }
 
+.desktop-navbar-scroll {
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.35) transparent;
+}
+.desktop-navbar-scroll::-webkit-scrollbar {
+  width: 6px;
+  height: 0;
+  background: transparent;
+}
+.desktop-navbar-scroll::-webkit-scrollbar:horizontal {
+  display: none;
+  height: 0;
+}
+.desktop-navbar-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.32);
+  border: none;
+  border-radius: 999px;
+}
+.desktop-navbar-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+  border: none;
+}
+.desktop-navbar-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
 .drop-shadow-neon {
   filter: drop-shadow(var(--glow-soft)) drop-shadow(var(--glow-strong));
 }
