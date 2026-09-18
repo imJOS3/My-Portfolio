@@ -1,17 +1,3 @@
-# Portfolio — Jose Benjumea
-
-Personal cyberpunk portfolio: a React SPA with snap-scroll home, hobbies, color theory, and recruiter FAQs.
-
-- **Live site:** [josebenjumea.dev](https://josebenjumea.dev/gh)
-- **Repo:** [imJOS3/My-Portfolio](https://github.com/imJOS3/My-Portfolio)
-- **Author:** Jose Benjumea ([`imJOS3`](https://github.com/imJOS3))
-- **Location:** Bogotá, Colombia (born and raised in Barranquilla)
-- **Status:** Software Engineering student (Universidad Manuela Beltrán), open to internships
-
-The UI is in **English**. This README is in English so GitHub visitors and recruiters can scan it quickly.
-
----
-
 ## What it is
 
 A one-page snap-scroll portfolio with extra routes for hobbies, color theory, and FAQs. The homepage is built so each section fills the viewport (`100dvh`) and snaps into place — content is meant to fit without scrolling inside a section.
